@@ -27,6 +27,9 @@
         <label for="custEmail">Email</label>
         <input id="custEmail" name="email" type="email" placeholder="you@example.com" required>
 
+        <label for="custPhone">Phone number</label>
+        <input id="custPhone" name="phone" type="tel" placeholder="+1 (555) 000-0000" required>
+
         <label for="custPassword">Password</label>
         <input id="custPassword" name="password" type="password" placeholder="Choose a password" required>
 
@@ -48,6 +51,9 @@
 
         <label for="bizEmail">Email</label>
         <input id="bizEmail" name="email" type="email" placeholder="owner@example.com" required>
+
+        <label for="bizPhone">Phone number</label>
+        <input id="bizPhone" name="phone" type="tel" placeholder="+1 (555) 000-0000" required>
 
         <label for="bizPassword">Password</label>
         <input id="bizPassword" name="password" type="password" placeholder="Choose a password" required>
@@ -106,6 +112,7 @@
           accountType: 'customer',
           fullName: document.getElementById('custFullName').value.trim(),
           email: document.getElementById('custEmail').value.trim(),
+          phone: document.getElementById('custPhone').value.trim(),
           password: password
         };
 
@@ -149,6 +156,7 @@
           businessName: document.getElementById('bizName').value.trim(),
           ownerName: document.getElementById('bizOwner').value.trim(),
           email: document.getElementById('bizEmail').value.trim(),
+          phone: document.getElementById('bizPhone').value.trim(),
           password: password
         };
 
