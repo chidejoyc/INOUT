@@ -13,13 +13,164 @@
       <a class="logo" href="index.html"><img src="assets/logo.svg" alt="INOUT logo" width="36" height="36"><span class="brand-name">INOUT</span></a>
       <nav class="main-nav" aria-label="Primary">
         <a href="customer-dashboard.html" class="nav-link active">Dashboard</a>
+        <a href="explore.html" class="nav-link">Explore</a>
       </nav>
+
+      <div class="header-actions">
+        <!-- authLinks will be hidden by auth.js when a user is signed in -->
+        <div id="authLinks" style="display:flex;gap:8px;align-items:center">
+          <a href="login.html" class="btn ghost">Login</a>
+          <a href="signup.html" class="btn primary">Sign Up</a>
+        </div>
+
+        <!-- userMenu shown when signed in (auth.js toggles this) -->
+        <div id="userMenu" style="display:none;align-items:center;gap:10px">
+          <div id="userName" style="font-weight:600;color:var(--accent)"></div>
+          <a href="#" id="logoutBtn" class="btn ghost">Logout</a>
+        </div>
+      </div>
     </div>
   </header>
 
-  <main class="container">
-    <h1>Customer Dashboard</h1>
-    <p class="muted">This is a demo customer dashboard. We'll add bookings, messages, and settings next.</p>
+  <main class="container" style="padding-top:20px;padding-bottom:20px;">
+    <div style="display:grid;grid-template-columns:1fr;gap:18px;">
+      <h1 id="pageTitle">Customer Dashboard</h1>
+
+      <div class="dashboard-grid" style="display:grid;grid-template-columns:260px 1fr;gap:18px;">
+        <!-- Sidebar / navigation -->
+        <aside class="info-card" style="padding:12px;">
+          <nav aria-label="Dashboard navigation">
+            <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px">
+              <li><a href="#welcome" class="link-muted">Overview</a></li>
+              <li><a href="#search" class="link-muted">Search</a></li>
+              <li><a href="#explore" class="link-muted">Explore Services</a></li>
+              <li><a href="#saved" class="link-muted">Saved Businesses</a></li>
+              <li><a href="#requests" class="link-muted">My Requests</a></li>
+              <li><a href="#bookings" class="link-muted">My Bookings</a></li>
+              <li><a href="#messages" class="link-muted">Messages</a></li>
+              <li><a href="#notifications" class="link-muted">Notifications</a></li>
+              <li><a href="#profile" class="link-muted">My Profile</a></li>
+              <li><a href="#settings" class="link-muted">Settings</a></li>
+            </ul>
+          </nav>
+        </aside>
+
+        <!-- Main dashboard content -->
+        <section>
+          <!-- Welcome -->
+          <section id="welcome" class="info-card" style="margin-bottom:12px;">
+            <h2 id="welcomeHeading">Welcome</h2>
+            <p id="welcomeSub" class="muted">Manage your requests, bookings, saved businesses and messages from here.</p>
+          </section>
+
+          <!-- Search -->
+          <section id="search" class="info-card" style="margin-bottom:12px;">
+            <h3>Search for businesses or services</h3>
+            <form action="explore.html" method="get" role="search" style="display:flex;gap:8px;flex-wrap:wrap">
+              <label class="sr-only" for="dash_q">What are you looking for?</label>
+              <input id="dash_q" name="q" class="search-input" type="search" placeholder="Search businesses or services">
+
+              <label class="sr-only" for="dash_location">Where?</label>
+              <input id="dash_location" name="location" class="search-location" type="text" placeholder="Location">
+
+              <button type="submit" class="btn primary">Search</button>
+            </form>
+          </section>
+
+          <!-- Explore Services -->
+          <section id="explore" class="info-card" style="margin-bottom:12px;">
+            <div class="section-head">
+              <h3>Explore Services</h3>
+              <a href="explore.html" class="link-muted">View all</a>
+            </div>
+
+            <div id="exploreList" class="cards" style="margin-top:10px;">
+              <!-- Empty state: no real data yet -->
+              <div class="card" style="flex-direction:column;align-items:flex-start;">
+                <h4 style="margin:0 0 8px">No services yet</h4>
+                <p class="muted" style="margin:0">Services will appear here when available.</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- Saved Businesses -->
+          <section id="saved" class="info-card" style="margin-bottom:12px;">
+            <div class="section-head">
+              <h3>Saved Businesses</h3>
+              <a href="#" class="link-muted">Manage</a>
+            </div>
+
+            <div id="savedList" class="cards" style="margin-top:10px;">
+              <div class="card" style="flex-direction:column;align-items:flex-start;">
+                <h4 style="margin:0 0 8px">No saved businesses yet</h4>
+                <p class="muted" style="margin:0">Businesses you save will appear here.</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- My Requests & Bookings grid -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+            <section id="requests" class="info-card">
+              <h3>My Requests</h3>
+              <div style="margin-top:8px;">
+                <div class="card" style="flex-direction:column;align-items:flex-start;">
+                  <h4 style="margin:0 0 8px">No requests yet</h4>
+                  <p class="muted" style="margin:0">Your requests will appear here.</p>
+                </div>
+              </div>
+            </section>
+
+            <section id="bookings" class="info-card">
+              <h3>My Bookings</h3>
+              <div style="margin-top:8px;">
+                <div class="card" style="flex-direction:column;align-items:flex-start;">
+                  <h4 style="margin:0 0 8px">No bookings yet</h4>
+                  <p class="muted" style="margin:0">Your bookings will appear here.</p>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <!-- Messages & Notifications grid -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+            <section id="messages" class="info-card">
+              <h3>Messages</h3>
+              <div style="margin-top:8px;">
+                <div class="card" style="flex-direction:column;align-items:flex-start;">
+                  <h4 style="margin:0 0 8px">No messages yet</h4>
+                  <p class="muted" style="margin:0">Your messages will appear here.</p>
+                </div>
+              </div>
+            </section>
+
+            <section id="notifications" class="info-card">
+              <h3>Notifications</h3>
+              <div style="margin-top:8px;">
+                <div class="card" style="flex-direction:column;align-items:flex-start;">
+                  <h4 style="margin:0 0 8px">No notifications yet</h4>
+                  <p class="muted" style="margin:0">Notifications will appear here.</p>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <!-- Profile & Settings -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <section id="profile" class="info-card">
+              <h3>My Profile</h3>
+              <p class="muted">Manage your profile, contact details, and preferences.</p>
+              <p style="margin-top:8px;"><a href="signup.html" class="btn ghost">Edit profile</a></p>
+            </section>
+
+            <section id="settings" class="info-card">
+              <h3>Settings</h3>
+              <p class="muted">Account and notification settings will be available here.</p>
+            </section>
+          </div>
+
+        </section>
+      </div>
+    </div>
   </main>
 
   <footer class="site-footer small">
@@ -27,5 +178,51 @@
       <small>© <span id="year6"></span> INOUT</small>
     </div>
   </footer>
+
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    (function(){
+      // Require login for this page
+      document.addEventListener('DOMContentLoaded', function(){
+        if(window.authRequireLogin && typeof window.authRequireLogin === 'function'){
+          window.authRequireLogin();
+        }
+
+        // Show welcome name using authenticated user's name
+        const user = (window.authGetUser && window.authGetUser()) || null;
+        const welcomeHeading = document.getElementById('welcomeHeading');
+        const welcomeSub = document.getElementById('welcomeSub');
+        const userNameEl = document.getElementById('userName');
+
+        let displayName = '';
+        if(user){
+          displayName = user.fullName || user.businessName || user.email || '';
+        }
+
+        if(welcomeHeading){
+          welcomeHeading.textContent = displayName ? `Welcome, ${displayName}` : 'Welcome';
+        }
+        if(userNameEl && displayName){
+          userNameEl.textContent = displayName;
+        }
+
+        // Ensure logout button is wired by auth.js (updateAuthUI binds it if present)
+      });
+
+      // Make dashboard responsive on small screens: stack sidebar above content
+      function applyResponsive(){
+        const grid = document.querySelector('.dashboard-grid');
+        if(!grid) return;
+        if(window.innerWidth < 720){
+          grid.style.gridTemplateColumns = '1fr';
+        } else {
+          grid.style.gridTemplateColumns = '260px 1fr';
+        }
+      }
+      window.addEventListener('resize', applyResponsive);
+      applyResponsive();
+    })();
+  </script>
 </body>
 </html>
