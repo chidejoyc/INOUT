@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Explore — INOUT</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <!-- Reuse header (kept simple here) -->
+  <header class="site-header small">
+    <div class="container header-inner">
+      <a class="logo" href="index.html"><img src="assets/logo.svg" alt="INOUT logo" width="36" height="36"><span class="brand-name">INOUT</span></a>
+      <nav class="main-nav" aria-label="Primary">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="explore.html" class="nav-link active">Explore</a>
+      </nav>
+      <div class="header-actions">
+        <a href="login.html" class="btn ghost">Login</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="results-head">
+      <h1>Explore results</h1>
+      <p id="resultsMeta" class="muted"></p>
+    </section>
+
+    <section id="resultsList" class="cards"></section>
+  </main>
+
+  <footer class="site-footer small">
+    <div class="container">
+      <small>© <span id="year2"></span> INOUT</small>
+    </div>
+  </footer>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>INOUT — Everything You Need, All in One Place</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <meta name="description" content="Discover trusted businesses and services. Create profiles, connect with customers. INOUT — Everything You Need, All in One Place.">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="index.html" aria-label="INOUT home">
+        <img src="assets/logo.svg" alt="INOUT logo" width="36" height="36">
+        <span class="brand-name">INOUT</span>
+      </a>
+
+      <nav class="main-nav" aria-label="Primary">
+        <a href="index.html" class="nav-link active">Home</a>
+        <a href="explore.html" class="nav-link">Explore</a>
+        <a href="services.html" class="nav-link">Services</a>
+        <a href="businesses.html" class="nav-link">Businesses</a>
+        <a href="about.html" class="nav-link">About</a>
+      </nav>
+
+      <div class="header-actions">
+        <div class="selectors" style="display:flex;gap:8px;align-items:center">
+          <!-- Global location selector (search country, city, or area) -->
+          <label class="sr-only" for="whereInput">Where are you?</label>
+          <input id="whereInput" class="select small" list="whereList" placeholder="Where are you?" aria-label="Where are you? Search country, city, or area">
+
+          <datalist id="whereList"></datalist>
+
+          <!-- Currency selector remains -->
+          <label class="sr-only" for="currency">Currency</label>
+          <select id="currency" class="select small" aria-label="Select currency"></select>
+        </div>
+
+        <a href="login.html" class="btn ghost">Login</a>
+        <a href="signup.html" class="btn primary">Sign Up</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="hero-copy">
+          <!-- Updated hero per your requirements -->
+          <h1 class="hero-title" style="margin-bottom:6px; font-size:28px; line-height:1.15;">
+            <div style="font-weight:800;letter-spacing:0.6px;">INOUT</div>
+            <div style="font-weight:600;font-size:20px;margin-top:8px">Everything You Need, All in One Place.</div>
+          </h1>
+
+          <p class="hero-sub">Discover businesses and services wherever you are. Connect with providers and get things done.</p>
+
+          <form id="searchForm" class="search-form" action="explore.html" method="get" role="search">
+            <label class="sr-only" for="q">What are you looking for?</label>
+            <input id="q" name="q" class="search-input" type="search" placeholder="What are you looking for?">
+
+            <label class="sr-only" for="locationInput">Where are you?</label>
+            <input id="locationInput" name="location" class="search-location" type="text" placeholder="Search country, city, or area">
+
+            <button type="submit" class="btn search-btn">Search</button>
+          </form>
+
+          <div class="popular">
+            <strong>Popular:</strong>
+            <div class="chips">
+              <button class="chip" data-term="Plumber">Plumber</button>
+              <button class="chip" data-term="Hair Stylist">Hair Stylist</button>
+              <button class="chip" data-term="Catering">Catering</button>
+              <button class="chip" data-term="Photographer">Photographer</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-hidden="true">
+          <div class="mock-card">Trusted local businesses, verified listings, and modern profiles — built for a global audience.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="featured container">
+      <div class="section-head">
+        <h2>Featured Businesses</h2>
+        <a href="businesses.html" class="link-muted">View all</a>
+      </div>
+
+      <div id="featuredList" class="cards"></div>
+    </section>
+
+    <section class="categories container">
+      <h3>Popular categories</h3>
+      <div class="grid categories-grid">
+        <a class="category-card" href="explore.html?q=Services">Services</a>
+        <a class="category-card" href="explore.html?q=Beauty">Beauty</a>
+        <a class="category-card" href="explore.html?q=Automotive">Automotive</a>
+        <a class="category-card" href="explore.html?q=Food+%26+Catering">Food &amp; Catering</a>
+        <a class="category-card" href="explore.html?q=Photography">Photography</a>
+        <a class="category-card" href="explore.html?q=Education">Education</a>
+        <a class="category-card" href="explore.html?q=Technology">Technology</a>
+        <a class="category-card" href="explore.html?q=Events">Events</a>
+        <a class="category-card" href="explore.html?q=Shopping">Shopping</a>
+        <a class="category-card" href="explore.html?q=Professional+Services">Professional Services</a>
+      </div>
+    </section>
+
+    <section class="cta container">
+      <div class="cta-grid">
+        <div class="cta-card">
+          <h4>Find a Service</h4>
+          <p>Quickly discover professionals in your selected area and connect with confidence.</p>
+          <a href="explore.html" class="btn primary">Find a Service</a>
+        </div>
+
+        <div class="cta-card alt">
+          <h4>List Your Business</h4>
+          <p>Create a professional profile, connect with customers, and grow your presence.</p>
+          <a href="signup.html" class="btn ghost">List Your Business</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="logo footer-logo" href="index.html"><img src="assets/logo.svg" alt="" width="28"> <span>INOUT</span></a>
+        <p class="muted">Everything You Need, All in One Place.</p>
+      </div>
+
+      <div>
+        <h5>Categories</h5>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="explore.html?q=Beauty">Beauty</a></li>
+          <li><a href="explore.html?q=Automotive">Automotive</a></li>
+          <li><a href="explore.html?q=Food+%26+Catering">Food &amp; Catering</a></li>
+          <li><a href="explore.html?q=Photography">Photography</a></li>
+          <li><a href="explore.html?q=Education">Education</a></li>
+          <li><a href="explore.html?q=Technology">Technology</a></li>
+          <li><a href="explore.html?q=Events">Events</a></li>
+          <li><a href="explore.html?q=Shopping">Shopping</a></li>
+          <li><a href="explore.html?q=Professional+Services">Professional Services</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5>Global support</h5>
+        <p class="muted">INOUT is a global platform. Select your country, city, and currency above to personalize results.</p>
+        <a href="contact.html" class="link-muted">Contact</a>
+      </div>
+    </div>
+
+    <div class="container copyright">
+      <small>© <span id="year"></span> INOUT — Built for global expansion.</small>
+    </div>
+  </footer>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
