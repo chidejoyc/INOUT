@@ -27,16 +27,11 @@
         <label for="custEmail">Email</label>
         <input id="custEmail" name="email" type="email" placeholder="you@example.com" required>
 
-        <label for="custCountry">Country</label>
-        <select id="custCountry" name="country" required>
-          <option value="">Select country</option>
-        </select>
-
-        <label for="custCity">City</label>
-        <input id="custCity" name="city" type="text" placeholder="City" required>
-
         <label for="custPassword">Password</label>
         <input id="custPassword" name="password" type="password" placeholder="Choose a password" required>
+
+        <label for="custConfirmPassword">Confirm Password</label>
+        <input id="custConfirmPassword" name="confirmPassword" type="password" placeholder="Confirm your password" required>
 
         <div class="row" style="margin-top:12px">
           <button class="btn primary" type="submit">Sign up as Customer</button>
@@ -54,31 +49,11 @@
         <label for="bizEmail">Email</label>
         <input id="bizEmail" name="email" type="email" placeholder="owner@example.com" required>
 
-        <label for="bizPhone">Phone</label>
-        <input id="bizPhone" name="phone" type="tel" placeholder="Phone number" required>
-
-        <label for="bizCountry">Country</label>
-        <select id="bizCountry" name="country" required>
-          <option value="">Select country</option>
-        </select>
-
-        <label for="bizState">State / Region</label>
-        <input id="bizState" name="state" type="text" placeholder="State or region" required>
-
-        <label for="bizCity">City</label>
-        <input id="bizCity" name="city" type="text" placeholder="City" required>
-
-        <label for="bizCategory">Category</label>
-        <select id="bizCategory" name="category" required>
-          <option value="">Select category</option>
-          <option value="restaurant">Restaurant</option>
-          <option value="retail">Retail</option>
-          <option value="services">Services</option>
-          <option value="other">Other</option>
-        </select>
-
         <label for="bizPassword">Password</label>
         <input id="bizPassword" name="password" type="password" placeholder="Choose a password" required>
+
+        <label for="bizConfirmPassword">Confirm Password</label>
+        <input id="bizConfirmPassword" name="confirmPassword" type="password" placeholder="Confirm your password" required>
 
         <div class="row" style="margin-top:12px">
           <button class="btn primary" type="submit">Sign up as Business</button>
@@ -117,13 +92,21 @@
       // Customer signup
       customerForm.addEventListener('submit', async (e)=>{
         e.preventDefault();
+        
+        const password = document.getElementById('custPassword').value;
+        const confirmPassword = document.getElementById('custConfirmPassword').value;
+        
+        if(password !== confirmPassword){
+          formMessage.textContent = 'Passwords do not match.';
+          formMessage.style.color = '#dc2626';
+          return;
+        }
+
         const payload = {
           accountType: 'customer',
           fullName: document.getElementById('custFullName').value.trim(),
           email: document.getElementById('custEmail').value.trim(),
-          country: document.getElementById('custCountry').value,
-          city: document.getElementById('custCity').value.trim(),
-          password: document.getElementById('custPassword').value
+          password: password
         };
 
         formMessage.textContent = 'Creating account...';
@@ -151,17 +134,22 @@
       // Business signup
       businessForm.addEventListener('submit', async (e)=>{
         e.preventDefault();
+        
+        const password = document.getElementById('bizPassword').value;
+        const confirmPassword = document.getElementById('bizConfirmPassword').value;
+        
+        if(password !== confirmPassword){
+          formMessage.textContent = 'Passwords do not match.';
+          formMessage.style.color = '#dc2626';
+          return;
+        }
+
         const payload = {
           accountType: 'business',
           businessName: document.getElementById('bizName').value.trim(),
           ownerName: document.getElementById('bizOwner').value.trim(),
           email: document.getElementById('bizEmail').value.trim(),
-          phone: document.getElementById('bizPhone').value.trim(),
-          country: document.getElementById('bizCountry').value,
-          state: document.getElementById('bizState').value.trim(),
-          city: document.getElementById('bizCity').value.trim(),
-          category: document.getElementById('bizCategory').value,
-          password: document.getElementById('bizPassword').value
+          password: password
         };
 
         formMessage.textContent = 'Creating business account...';
@@ -184,11 +172,6 @@
           formMessage.textContent = 'An error occurred. Check console for details.';
           formMessage.style.color = '#dc2626';
         }
-      });
-
-      // Populate country selects
-      document.addEventListener('DOMContentLoaded', ()=>{
-        if(window.populateCountrySelects) window.populateCountrySelects();
       });
     })();
   </script>
