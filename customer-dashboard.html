@@ -51,6 +51,7 @@
               <li><a href="#notifications" class="link-muted">Notifications</a></li>
               <li><a href="#profile" class="link-muted">My Profile</a></li>
               <li><a href="#settings" class="link-muted">Settings</a></li>
+              <li><a href="#logout" id="sidebarLogout" class="link-muted">Logout</a></li>
             </ul>
           </nav>
         </aside>
@@ -208,6 +209,15 @@
         }
 
         // Ensure logout button is wired by auth.js (updateAuthUI binds it if present)
+
+        // sidebar logout link
+        const sidebarLogout = document.getElementById('sidebarLogout');
+        if(sidebarLogout){
+          sidebarLogout.addEventListener('click', function(e){
+            e.preventDefault();
+            if(window.authLogout) window.authLogout();
+          });
+        }
       });
 
       // Make dashboard responsive on small screens: stack sidebar above content
