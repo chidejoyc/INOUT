@@ -12,22 +12,185 @@
     <a href="index.html" class="logo auth-logo"><img src="assets/logo.svg" alt="INOUT"> INOUT</a>
     <div class="auth-card">
       <h1>Create an account</h1>
-      <form>
-        <label>Full name</label>
-        <input type="text" placeholder="Your name" required>
-        <label>Email</label>
-        <input type="email" placeholder="you@example.com" required>
-        <label>Password</label>
-        <input type="password" placeholder="Choose a password" required>
-        <div class="row">
-          <a href="business-dashboard.html" class="btn ghost">Create Business Account</a>
-          <button class="btn primary" type="submit">Sign Up</button>
+
+      <!-- Account type selector -->
+      <div class="row" style="gap:12px;margin-bottom:12px">
+        <label style="display:flex;align-items:center;gap:8px"><input type="radio" name="acctType" value="customer" id="acctCustomer" checked> Customer</label>
+        <label style="display:flex;align-items:center;gap:8px"><input type="radio" name="acctType" value="business" id="acctBusiness"> Business</label>
+      </div>
+
+      <!-- Customer form -->
+      <form id="customerForm" class="acct-form" style="display:block">
+        <label for="custFullName">Full name</label>
+        <input id="custFullName" name="fullName" type="text" placeholder="Your full name" required>
+
+        <label for="custEmail">Email</label>
+        <input id="custEmail" name="email" type="email" placeholder="you@example.com" required>
+
+        <label for="custCountry">Country</label>
+        <select id="custCountry" name="country" required>
+          <option value="">Select country</option>
+        </select>
+
+        <label for="custCity">City</label>
+        <input id="custCity" name="city" type="text" placeholder="City" required>
+
+        <label for="custPassword">Password</label>
+        <input id="custPassword" name="password" type="password" placeholder="Choose a password" required>
+
+        <div class="row" style="margin-top:12px">
+          <button class="btn primary" type="submit">Sign up as Customer</button>
         </div>
       </form>
+
+      <!-- Business form -->
+      <form id="businessForm" class="acct-form" style="display:none">
+        <label for="bizName">Business name</label>
+        <input id="bizName" name="businessName" type="text" placeholder="Business name" required>
+
+        <label for="bizOwner">Owner name</label>
+        <input id="bizOwner" name="ownerName" type="text" placeholder="Owner full name" required>
+
+        <label for="bizEmail">Email</label>
+        <input id="bizEmail" name="email" type="email" placeholder="owner@example.com" required>
+
+        <label for="bizPhone">Phone</label>
+        <input id="bizPhone" name="phone" type="tel" placeholder="Phone number" required>
+
+        <label for="bizCountry">Country</label>
+        <select id="bizCountry" name="country" required>
+          <option value="">Select country</option>
+        </select>
+
+        <label for="bizState">State / Region</label>
+        <input id="bizState" name="state" type="text" placeholder="State or region" required>
+
+        <label for="bizCity">City</label>
+        <input id="bizCity" name="city" type="text" placeholder="City" required>
+
+        <label for="bizCategory">Category</label>
+        <select id="bizCategory" name="category" required>
+          <option value="">Select category</option>
+          <option value="restaurant">Restaurant</option>
+          <option value="retail">Retail</option>
+          <option value="services">Services</option>
+          <option value="other">Other</option>
+        </select>
+
+        <label for="bizPassword">Password</label>
+        <input id="bizPassword" name="password" type="password" placeholder="Choose a password" required>
+
+        <div class="row" style="margin-top:12px">
+          <button class="btn primary" type="submit">Sign up as Business</button>
+        </div>
+      </form>
+
+      <p id="formMessage" class="muted" style="margin-top:12px"></p>
       <p class="muted">Already have an account? <a href="login.html">Login</a></p>
     </div>
   </main>
 
   <script src="assets/js/app.js"></script>
+  <script>
+    // Lightweight behavior for the signup page. The real backend should accept POST /api/auth/signup
+    (function(){
+      const acctCustomer = document.getElementById('acctCustomer');
+      const acctBusiness = document.getElementById('acctBusiness');
+      const customerForm = document.getElementById('customerForm');
+      const businessForm = document.getElementById('businessForm');
+      const formMessage = document.getElementById('formMessage');
+
+      function show(type){
+        if(type==='customer'){
+          customerForm.style.display = 'block';
+          businessForm.style.display = 'none';
+        } else {
+          customerForm.style.display = 'none';
+          businessForm.style.display = 'block';
+        }
+        formMessage.textContent = '';
+      }
+
+      acctCustomer.addEventListener('change', ()=> show('customer'));
+      acctBusiness.addEventListener('change', ()=> show('business'));
+
+      // On submit, gather values and call placeholder function. Replace with real API call later.
+      customerForm.addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        const payload = {
+          accountType: 'customer',
+          fullName: document.getElementById('custFullName').value.trim(),
+          email: document.getElementById('custEmail').value.trim(),
+          country: document.getElementById('custCountry').value,
+          city: document.getElementById('custCity').value.trim(),
+          password: document.getElementById('custPassword').value
+        };
+
+        formMessage.textContent = 'Signing up...';
+
+        try {
+          // Placeholder: show the payload in console. To connect a real backend, send a POST to /api/auth/signup
+          // Example:
+          // const res = await fetch('/api/auth/signup', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+          // const data = await res.json();
+
+          console.log('Signup payload (customer):', payload);
+          // Simulate success response for UI only — does not create any real user
+          formMessage.textContent = 'Signup submitted. Connect a backend to create real accounts.';
+        } catch(err){
+          console.error(err);
+          formMessage.textContent = 'An error occurred. Check console for details.';
+        }
+      });
+
+      businessForm.addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        const payload = {
+          accountType: 'business',
+          businessName: document.getElementById('bizName').value.trim(),
+          ownerName: document.getElementById('bizOwner').value.trim(),
+          email: document.getElementById('bizEmail').value.trim(),
+          phone: document.getElementById('bizPhone').value.trim(),
+          country: document.getElementById('bizCountry').value,
+          state: document.getElementById('bizState').value.trim(),
+          city: document.getElementById('bizCity').value.trim(),
+          category: document.getElementById('bizCategory').value,
+          password: document.getElementById('bizPassword').value
+        };
+
+        formMessage.textContent = 'Signing up...';
+        try {
+          console.log('Signup payload (business):', payload);
+          formMessage.textContent = 'Signup submitted. Connect a backend to create real accounts.';
+        } catch(err){
+          console.error(err);
+          formMessage.textContent = 'An error occurred. Check console for details.';
+        }
+      });
+
+      // Allow other scripts (assets/js/app.js) to populate country selects by calling populateCountrySelects()
+      // If that function is not present, we still try to populate from a minimal fallback
+      function populateIfAvailable(){
+        if(window.populateCountrySelects){
+          window.populateCountrySelects();
+        } else {
+          // fallback: add a small static set
+          const simple = ['United States','United Kingdom','Canada','Nigeria','India'];
+          ['custCountry','bizCountry'].forEach(id=>{
+            const sel = document.getElementById(id);
+            if(sel && sel.options.length<=1){
+              simple.forEach(c=>{
+                const opt = document.createElement('option'); opt.value=c; opt.textContent=c; sel.appendChild(opt);
+              });
+            }
+          });
+        }
+      }
+
+      // populate on load
+      document.addEventListener('DOMContentLoaded', populateIfAvailable);
+
+    })();
+  </script>
 </body>
 </html>
