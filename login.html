@@ -35,6 +35,7 @@
     </div>
   </main>
 
+  <script src="assets/js/auth.js"></script>
   <script src="assets/js/app.js"></script>
   <script>
     (function(){
@@ -53,27 +54,31 @@
         };
 
         loginMessage.textContent = 'Logging in...';
+        loginMessage.style.color = 'var(--muted)';
+        
         try {
-          // Placeholder: replace with real backend call to /api/auth/login
-          // Example:
-          // const res = await fetch('/api/auth/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
-          // const data = await res.json();
-
-          console.log('Login payload:', payload);
-          loginMessage.textContent = 'Login submitted. Connect a backend to authenticate users.';
-
-          // Note: do not perform any redirect here — wait for a real backend response before changing pages.
+          const success = await window.authLogin(payload.email, payload.password, payload.accountType);
+          if(success){
+            loginMessage.textContent = 'Login successful! Redirecting...';
+            loginMessage.style.color = 'var(--primary)';
+            setTimeout(() => {
+              const user = JSON.parse(localStorage.getItem('inout_user'));
+              if(user.accountType === 'business'){
+                window.location.href = 'business-dashboard.html';
+              } else {
+                window.location.href = 'customer-dashboard.html';
+              }
+            }, 500);
+          } else {
+            loginMessage.textContent = 'Invalid email or password.';
+            loginMessage.style.color = '#dc2626';
+          }
         } catch(err){
           console.error(err);
           loginMessage.textContent = 'An error occurred. Check console for details.';
+          loginMessage.style.color = '#dc2626';
         }
       });
-
-      // Optionally populate countries on login page too if a country select is present later
-      document.addEventListener('DOMContentLoaded', ()=>{
-        if(window.populateCountrySelects) window.populateCountrySelects();
-      });
-
     })();
   </script>
 </body>
