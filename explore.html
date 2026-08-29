@@ -24,11 +24,49 @@
 
   <main class="container">
     <section class="results-head">
-      <h1>Explore results</h1>
-      <p id="resultsMeta" class="muted"></p>
+      <h1>Explore</h1>
+
+      <!-- Search & Filters -->
+      <form id="exploreForm" class="search-bar" onsubmit="return false;">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+          <input id="q" name="q" type="search" placeholder="Search for a business or service" style="flex:1;min-width:160px;padding:10px;border-radius:10px;border:1px solid rgba(15,23,42,0.06);">
+          <input id="locationInput" name="location" list="whereList" placeholder="Country / City" style="width:220px;padding:10px;border-radius:10px;border:1px solid rgba(15,23,42,0.06);">
+          <select id="filterCategory" style="width:160px;padding:10px;border-radius:10px;border:1px solid rgba(15,23,42,0.06);">
+            <option value="">All categories</option>
+            <option value="restaurant">Restaurant</option>
+            <option value="retail">Retail</option>
+            <option value="services">Services</option>
+            <option value="beauty">Beauty & Wellness</option>
+            <option value="automotive">Automotive</option>
+            <option value="education">Education</option>
+            <option value="photography">Photography</option>
+            <option value="events">Events</option>
+            <option value="other">Other</option>
+          </select>
+
+          <select id="filterPrice" style="width:120px;padding:10px;border-radius:10px;border:1px solid rgba(15,23,42,0.06);">
+            <option value="">Any price</option>
+            <option value="$">$</option>
+            <option value="$$">$$</option>
+            <option value="$$$">$$$</option>
+          </select>
+
+          <select id="sortBy" style="width:160px;padding:10px;border-radius:10px;border:1px solid rgba(15,23,42,0.06);">
+            <option value="relevance">Sort: Relevance</option>
+            <option value="name_asc">Name: A → Z</option>
+            <option value="price_asc">Price: Low → High</option>
+            <option value="price_desc">Price: High → Low</option>
+          </select>
+
+          <button id="searchBtn" class="btn primary" style="padding:10px 14px;border-radius:10px;">Search</button>
+          <a href="signup.html" class="btn ghost" style="padding:10px 14px;border-radius:10px;margin-left:auto;">List Your Business</a>
+        </div>
+      </form>
+
+      <p id="resultsMeta" class="muted" style="margin-top:12px;"></p>
     </section>
 
-    <section id="resultsList" class="cards"></section>
+    <section id="resultsList" class="cards" style="margin-top:16px;"></section>
   </main>
 
   <footer class="site-footer small">
@@ -38,5 +76,6 @@
   </footer>
 
   <script src="assets/js/app.js"></script>
+  <script src="assets/js/explore.js"></script>
 </body>
 </html>
