@@ -1,52 +1,50 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Business Profile — INOUT</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/styles.css">
-</head>
-<body>
-  <header class="site-header small">
-    <div class="container header-inner">
-      <a class="logo" href="index.html"><img src="assets/logo.svg" alt="INOUT logo" width="36" height="36"><span class="brand-name">INOUT</span></a>
-      <nav class="main-nav" aria-label="Primary">
-        <a href="index.html" class="nav-link">Home</a>
-        <a href="businesses.html" class="nav-link active">Businesses</a>
-      </nav>
-    </div>
-  </header>
+<script>
+  (function(){
+    function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, function(m){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]); }); }
+    function getQueryId(){ const p = new URLSearchParams(location.search); return p.get('id'); }
+    function loadBusiness(id){
+      try {
+        const users = JSON.parse(localStorage.getItem('inout_users') || '[]');
+        const b = users.find(u => u.id === id && u.accountType === 'business');
+        return b || null;
+      } catch(e){ return null; }
+    }
 
-  <main class="container business-profile">
-    <div class="profile-header">
-      <div class="avatar">DB</div>
-      <div>
-        <h1 id="bpName">Demo Business</h1>
-        <p id="bpCategory" class="muted">Category · City</p>
-        <p id="bpDesc">This is a demo business profile. Use this page to expand features (hours, contact, services, gallery).</p>
-        <div class="actions">
-          <a class="btn primary">Message</a>
-          <a class="btn ghost">Visit Website</a>
-        </div>
-      </div>
-    </div>
+    document.addEventListener('DOMContentLoaded', function(){
+      const id = getQueryId();
+      const nameEl = document.getElementById('bpName');
+      const catEl = document.getElementById('bpCategory');
+      const descEl = document.getElementById('bpDesc');
+      const servicesEl = document.getElementById('bpServices');
 
-    <section class="profile-section">
-      <h3>Services</h3>
-      <ul id="bpServices" class="muted">
-        <li>Service 1</li>
-        <li>Service 2</li>
-      </ul>
-    </section>
-  </main>
+      if(!id){
+        if(nameEl) nameEl.textContent = 'Business not found';
+        if(descEl) descEl.textContent = '';
+        return;
+      }
 
-  <footer class="site-footer small">
-    <div class="container">
-      <small>© <span id="year5"></span> INOUT</small>
-    </div>
-  </footer>
+      const biz = loadBusiness(id);
+      if(!biz){
+        if(nameEl) nameEl.textContent = 'Business not found';
+        if(descEl) descEl.textContent = '';
+        return;
+      }
 
-  <script src="assets/js/app.js"></script>
-</body>
-</html>
+      if(nameEl) nameEl.textContent = biz.businessName || biz.fullName || biz.email;
+      if(catEl) catEl.textContent = `${biz.category || ''}${biz.city ? ' · ' + biz.city : ''}`;
+      if(descEl) descEl.textContent = (biz.profile && biz.profile.description) || '';
+      if(servicesEl){
+        servicesEl.innerHTML = (biz.services && biz.services.length) ? biz.services.map(s=>`<li>${escapeHtml(s)}</li>`).join('') : '<li class="muted">No services listed yet</li>';
+      }
+
+      // Visit website button hookup
+      const visit = document.querySelector('.actions .btn.ghost');
+      if(visit && biz.profile && biz.profile.website){
+        visit.setAttribute('href', biz.profile.website);
+        visit.removeAttribute('onclick');
+      } else if(visit){
+        visit.style.display = 'none';
+      }
+    });
+  })();
+</script>
