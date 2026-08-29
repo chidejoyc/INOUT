@@ -90,9 +90,9 @@
     </div>
   </main>
 
+  <script src="assets/js/auth.js"></script>
   <script src="assets/js/app.js"></script>
   <script>
-    // Lightweight behavior for the signup page. The real backend should accept POST /api/auth/signup
     (function(){
       const acctCustomer = document.getElementById('acctCustomer');
       const acctBusiness = document.getElementById('acctBusiness');
@@ -114,7 +114,7 @@
       acctCustomer.addEventListener('change', ()=> show('customer'));
       acctBusiness.addEventListener('change', ()=> show('business'));
 
-      // On submit, gather values and call placeholder function. Replace with real API call later.
+      // Customer signup
       customerForm.addEventListener('submit', async (e)=>{
         e.preventDefault();
         const payload = {
@@ -126,23 +126,29 @@
           password: document.getElementById('custPassword').value
         };
 
-        formMessage.textContent = 'Signing up...';
+        formMessage.textContent = 'Creating account...';
+        formMessage.style.color = 'var(--muted)';
 
         try {
-          // Placeholder: show the payload in console. To connect a real backend, send a POST to /api/auth/signup
-          // Example:
-          // const res = await fetch('/api/auth/signup', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
-          // const data = await res.json();
-
-          console.log('Signup payload (customer):', payload);
-          // Simulate success response for UI only — does not create any real user
-          formMessage.textContent = 'Signup submitted. Connect a backend to create real accounts.';
+          const success = await window.authSignup(payload);
+          if(success){
+            formMessage.textContent = 'Account created! Redirecting to dashboard...';
+            formMessage.style.color = 'var(--primary)';
+            setTimeout(() => {
+              window.location.href = 'customer-dashboard.html';
+            }, 500);
+          } else {
+            formMessage.textContent = 'Email already exists. Please login or use a different email.';
+            formMessage.style.color = '#dc2626';
+          }
         } catch(err){
           console.error(err);
           formMessage.textContent = 'An error occurred. Check console for details.';
+          formMessage.style.color = '#dc2626';
         }
       });
 
+      // Business signup
       businessForm.addEventListener('submit', async (e)=>{
         e.preventDefault();
         const payload = {
@@ -158,38 +164,32 @@
           password: document.getElementById('bizPassword').value
         };
 
-        formMessage.textContent = 'Signing up...';
+        formMessage.textContent = 'Creating business account...';
+        formMessage.style.color = 'var(--muted)';
+
         try {
-          console.log('Signup payload (business):', payload);
-          formMessage.textContent = 'Signup submitted. Connect a backend to create real accounts.';
+          const success = await window.authSignup(payload);
+          if(success){
+            formMessage.textContent = 'Business account created! Redirecting to dashboard...';
+            formMessage.style.color = 'var(--primary)';
+            setTimeout(() => {
+              window.location.href = 'business-dashboard.html';
+            }, 500);
+          } else {
+            formMessage.textContent = 'Email already exists. Please login or use a different email.';
+            formMessage.style.color = '#dc2626';
+          }
         } catch(err){
           console.error(err);
           formMessage.textContent = 'An error occurred. Check console for details.';
+          formMessage.style.color = '#dc2626';
         }
       });
 
-      // Allow other scripts (assets/js/app.js) to populate country selects by calling populateCountrySelects()
-      // If that function is not present, we still try to populate from a minimal fallback
-      function populateIfAvailable(){
-        if(window.populateCountrySelects){
-          window.populateCountrySelects();
-        } else {
-          // fallback: add a small static set
-          const simple = ['United States','United Kingdom','Canada','Nigeria','India'];
-          ['custCountry','bizCountry'].forEach(id=>{
-            const sel = document.getElementById(id);
-            if(sel && sel.options.length<=1){
-              simple.forEach(c=>{
-                const opt = document.createElement('option'); opt.value=c; opt.textContent=c; sel.appendChild(opt);
-              });
-            }
-          });
-        }
-      }
-
-      // populate on load
-      document.addEventListener('DOMContentLoaded', populateIfAvailable);
-
+      // Populate country selects
+      document.addEventListener('DOMContentLoaded', ()=>{
+        if(window.populateCountrySelects) window.populateCountrySelects();
+      });
     })();
   </script>
 </body>
