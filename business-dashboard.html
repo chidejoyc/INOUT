@@ -6,6 +6,129 @@
   <title>Business Dashboard — INOUT</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/styles.css">
+  <style>
+    .dashboard-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    
+    .sidebar {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 16px;
+      border: 1px solid rgba(15,23,42,0.04);
+    }
+    
+    .sidebar-nav {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .sidebar-nav a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--text);
+      transition: background 0.2s;
+    }
+    
+    .sidebar-nav a:hover,
+    .sidebar-nav a.active {
+      background: rgba(14, 165, 160, 0.1);
+      color: var(--primary);
+      font-weight: 600;
+    }
+    
+    .main-content {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid rgba(15,23,42,0.04);
+    }
+    
+    .main-content h2 {
+      margin-top: 0;
+    }
+    
+    .section {
+      margin-bottom: 24px;
+      display: none;
+    }
+    
+    .section.active {
+      display: block;
+    }
+    
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    
+    .item-card {
+      background: white;
+      border: 1px solid rgba(15,23,42,0.04);
+      border-radius: 10px;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .item-info h4 {
+      margin: 0 0 4px;
+      font-size: 16px;
+    }
+    
+    .item-meta {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(15,23,42,0.06);
+      font-family: inherit;
+    }
+
+    .form-group textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    @media(min-width: 720px) {
+      .dashboard-container {
+        grid-template-columns: 240px 1fr;
+      }
+      
+      .sidebar-nav {
+        flex-direction: column;
+      }
+    }
+  </style>
 </head>
 <body>
   <header class="site-header small">
@@ -14,18 +137,396 @@
       <nav class="main-nav" aria-label="Primary">
         <a href="business-dashboard.html" class="nav-link active">Dashboard</a>
       </nav>
+      <div class="header-actions">
+        <div id="userMenu" style="display:flex;gap:8px;align-items:center">
+          <span id="userName" class="muted"></span>
+          <button id="logoutBtn" class="btn ghost">Logout</button>
+        </div>
+      </div>
     </div>
   </header>
 
   <main class="container">
-    <h1>Business Dashboard</h1>
-    <p class="muted">This is a demo business dashboard for managing your listing, messages, and services.</p>
+    <div class="dashboard-container">
+      <!-- Sidebar Navigation -->
+      <aside class="sidebar">
+        <h3 style="margin-top:0">Business Menu</h3>
+        <nav class="sidebar-nav">
+          <a href="#" data-section="profile" class="nav-item active">🏢 Business Profile</a>
+          <a href="#" data-section="services" class="nav-item">🛠️ Services</a>
+          <a href="#" data-section="prices" class="nav-item">💰 Prices</a>
+          <a href="#" data-section="photos" class="nav-item">📸 Photos</a>
+          <a href="#" data-section="location" class="nav-item">📍 Location</a>
+          <a href="#" data-section="hours" class="nav-item">⏰ Opening Hours</a>
+          <a href="#" data-section="requests" class="nav-item">📝 Customer Requests</a>
+          <a href="#" data-section="bookings" class="nav-item">📅 Bookings</a>
+          <a href="#" data-section="messages" class="nav-item">💬 Messages</a>
+          <a href="#" data-section="reviews" class="nav-item">⭐ Reviews</a>
+          <a href="#" data-section="verification" class="nav-item">✓ Verification</a>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <!-- Business Profile Section -->
+        <section id="profile" class="section active">
+          <h2>Business Profile</h2>
+          <form id="profileForm" style="max-width:600px">
+            <div class="form-group">
+              <label for="bizName">Business Name</label>
+              <input id="bizName" type="text" placeholder="Your business name" required>
+            </div>
+
+            <div class="form-group">
+              <label for="ownerName">Owner Name</label>
+              <input id="ownerName" type="text" placeholder="Owner full name" required>
+            </div>
+
+            <div class="form-group">
+              <label for="bizEmail">Business Email</label>
+              <input id="bizEmail" type="email" placeholder="business@email.com" disabled>
+            </div>
+
+            <div class="form-group">
+              <label for="bizPhone">Phone</label>
+              <input id="bizPhone" type="tel" placeholder="Business phone number" required>
+            </div>
+
+            <div class="form-group">
+              <label for="bizCategory">Category</label>
+              <select id="bizCategory" required>
+                <option value="">Select category</option>
+                <option value="restaurant">Restaurant</option>
+                <option value="retail">Retail</option>
+                <option value="services">Services</option>
+                <option value="beauty">Beauty & Wellness</option>
+                <option value="automotive">Automotive</option>
+                <option value="education">Education</option>
+                <option value="photography">Photography</option>
+                <option value="events">Events</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="bizDescription">Business Description</label>
+              <textarea id="bizDescription" placeholder="Describe your business, services, and expertise"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="bizWebsite">Website (Optional)</label>
+              <input id="bizWebsite" type="url" placeholder="https://yourwebsite.com">
+            </div>
+
+            <button type="submit" class="btn primary">Save Business Profile</button>
+          </form>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="section">
+          <h2>Your Services</h2>
+          <p class="muted">List and manage the services you offer.</p>
+          <div style="margin-bottom:16px">
+            <button class="btn primary" id="addServiceBtn">+ Add Service</button>
+          </div>
+          <div class="dashboard-grid" id="servicesList">
+            <p class="muted">No services added yet.</p>
+          </div>
+        </section>
+
+        <!-- Prices Section -->
+        <section id="prices" class="section">
+          <h2>Pricing</h2>
+          <p class="muted">Set prices for your services.</p>
+          <div style="margin-bottom:16px">
+            <button class="btn primary" id="addPriceBtn">+ Add Price</button>
+          </div>
+          <div class="dashboard-grid" id="pricesList">
+            <p class="muted">No prices set yet.</p>
+          </div>
+        </section>
+
+        <!-- Photos Section -->
+        <section id="photos" class="section">
+          <h2>Business Photos</h2>
+          <p class="muted">Upload photos of your business, work, and services.</p>
+          <div style="margin-bottom:16px">
+            <input type="file" id="photoUpload" accept="image/*" style="margin-right:8px">
+            <button class="btn primary" id="uploadPhotoBtn">Upload Photo</button>
+          </div>
+          <div class="dashboard-grid" id="photosList">
+            <p class="muted">No photos uploaded yet.</p>
+          </div>
+        </section>
+
+        <!-- Location Section -->
+        <section id="location" class="section">
+          <h2>Business Location</h2>
+          <form id="locationForm" style="max-width:600px">
+            <div class="form-group">
+              <label for="locCountry">Country</label>
+              <select id="locCountry" required>
+                <option value="">Select country</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="locState">State / Region</label>
+              <input id="locState" type="text" placeholder="State or region" required>
+            </div>
+
+            <div class="form-group">
+              <label for="locCity">City</label>
+              <input id="locCity" type="text" placeholder="City" required>
+            </div>
+
+            <div class="form-group">
+              <label for="locAddress">Street Address</label>
+              <input id="locAddress" type="text" placeholder="Street address" required>
+            </div>
+
+            <button type="submit" class="btn primary">Save Location</button>
+          </form>
+        </section>
+
+        <!-- Opening Hours Section -->
+        <section id="hours" class="section">
+          <h2>Opening Hours</h2>
+          <form id="hoursForm" style="max-width:600px">
+            <div class="form-group">
+              <label>Monday</label>
+              <div style="display:flex;gap:8px">
+                <input type="time" class="day-open" placeholder="Opening time" style="flex:1">
+                <input type="time" class="day-close" placeholder="Closing time" style="flex:1">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Tuesday</label>
+              <div style="display:flex;gap:8px">
+                <input type="time" class="day-open" placeholder="Opening time" style="flex:1">
+                <input type="time" class="day-close" placeholder="Closing time" style="flex:1">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Wednesday</label>
+              <div style="display:flex;gap:8px">
+                <input type="time" class="day-open" placeholder="Opening time" style="flex:1">
+                <input type="time" class="day-close" placeholder="Closing time" style="flex:1">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Thursday</label>
+              <div style="display:flex;gap:8px">
+                <input type="time" class="day-open" placeholder="Opening time" style="flex:1">
+                <input type="time" class="day-close" placeholder="Closing time" style="flex:1">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Friday</label>
+              <div style="display:flex;gap:8px">
+                <input type="time" class="day-open" placeholder="Opening time" style="flex:1">
+                <input type="time" class="day-close" placeholder="Closing time" style="flex:1">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Saturday</label>
+              <div style="display:flex;gap:8px">
+                <input type="time" class="day-open" placeholder="Opening time" style="flex:1">
+                <input type="time" class="day-close" placeholder="Closing time" style="flex:1">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Sunday</label>
+              <div style="display:flex;gap:8px">
+                <input type="time" class="day-open" placeholder="Opening time" style="flex:1">
+                <input type="time" class="day-close" placeholder="Closing time" style="flex:1">
+              </div>
+            </div>
+
+            <button type="submit" class="btn primary">Save Opening Hours</button>
+          </form>
+        </section>
+
+        <!-- Customer Requests Section -->
+        <section id="requests" class="section">
+          <h2>Customer Requests</h2>
+          <p class="muted">Manage requests from customers.</p>
+          <div class="dashboard-grid" id="requestsList">
+            <p class="muted">No customer requests yet.</p>
+          </div>
+        </section>
+
+        <!-- Bookings Section -->
+        <section id="bookings" class="section">
+          <h2>Bookings</h2>
+          <p class="muted">Manage customer bookings and appointments.</p>
+          <div class="dashboard-grid" id="bookingsList">
+            <p class="muted">No bookings yet.</p>
+          </div>
+        </section>
+
+        <!-- Messages Section -->
+        <section id="messages" class="section">
+          <h2>Messages</h2>
+          <p class="muted">Conversations with customers.</p>
+          <div class="dashboard-grid" id="messagesList">
+            <p class="muted">No messages yet.</p>
+          </div>
+        </section>
+
+        <!-- Reviews Section -->
+        <section id="reviews" class="section">
+          <h2>Customer Reviews</h2>
+          <p class="muted">Reviews and ratings from customers.</p>
+          <div class="dashboard-grid" id="reviewsList">
+            <p class="muted">No reviews yet.</p>
+          </div>
+        </section>
+
+        <!-- Verification Section -->
+        <section id="verification" class="section">
+          <h2>Business Verification</h2>
+          <p class="muted">Complete verification to increase customer trust.</p>
+          <div class="item-card">
+            <div class="item-info">
+              <h4>Verification Status</h4>
+              <p class="item-meta" id="verStatus">Not verified</p>
+            </div>
+            <button class="btn primary" id="verifyBtn">Start Verification</button>
+          </div>
+        </section>
+      </div>
+    </div>
   </main>
 
   <footer class="site-footer small">
     <div class="container">
-      <small>© <span id="year7"></span> INOUT</small>
+      <small>© <span id="year"></span> INOUT</small>
     </div>
   </footer>
+
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    (function(){
+      // Require business login
+      if(!window.authRequireAccountType('business')){
+        return;
+      }
+
+      const user = window.authGetUser();
+
+      // Navigation
+      const navItems = document.querySelectorAll('.nav-item');
+      navItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+          e.preventDefault();
+          const section = item.dataset.section;
+          
+          // Hide all sections
+          document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+          document.getElementById(section).classList.add('active');
+          
+          // Update active nav
+          navItems.forEach(n => n.classList.remove('active'));
+          item.classList.add('active');
+        });
+      });
+
+      // Load profile data
+      const profileForm = document.getElementById('profileForm');
+      const bizName = document.getElementById('bizName');
+      const ownerName = document.getElementById('ownerName');
+      const bizEmail = document.getElementById('bizEmail');
+      const bizPhone = document.getElementById('bizPhone');
+      const bizCategory = document.getElementById('bizCategory');
+      const bizDescription = document.getElementById('bizDescription');
+      const bizWebsite = document.getElementById('bizWebsite');
+
+      bizName.value = user.businessName || '';
+      ownerName.value = user.ownerName || '';
+      bizEmail.value = user.email;
+      bizPhone.value = user.phone || '';
+      bizCategory.value = user.category || '';
+      if(user.profile){
+        bizDescription.value = user.profile.description || '';
+        bizWebsite.value = user.profile.website || '';
+      }
+
+      // Profile form submission
+      profileForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        user.businessName = bizName.value;
+        user.ownerName = ownerName.value;
+        user.phone = bizPhone.value;
+        user.category = bizCategory.value;
+        if(!user.profile) user.profile = {};
+        user.profile.description = bizDescription.value;
+        user.profile.website = bizWebsite.value;
+
+        localStorage.setItem('inout_user', JSON.stringify(user));
+        
+        // Update user in users list
+        const users = JSON.parse(localStorage.getItem('inout_users'));
+        const index = users.findIndex(u => u.id === user.id);
+        if(index !== -1){
+          users[index] = { ...user, password: users[index].password };
+          localStorage.setItem('inout_users', JSON.stringify(users));
+        }
+
+        alert('Business profile updated successfully!');
+      });
+
+      // Location form
+      const locationForm = document.getElementById('locationForm');
+      const locCountry = document.getElementById('locCountry');
+      const locState = document.getElementById('locState');
+      const locCity = document.getElementById('locCity');
+      const locAddress = document.getElementById('locAddress');
+
+      locState.value = user.state || '';
+      locCity.value = user.city || '';
+      if(user.location){
+        locAddress.value = user.location.address || '';
+      }
+
+      locationForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        user.state = locState.value;
+        user.city = locCity.value;
+        if(!user.location) user.location = {};
+        user.location.address = locAddress.value;
+
+        localStorage.setItem('inout_user', JSON.stringify(user));
+        
+        const users = JSON.parse(localStorage.getItem('inout_users'));
+        const index = users.findIndex(u => u.id === user.id);
+        if(index !== -1){
+          users[index] = { ...user, password: users[index].password };
+          localStorage.setItem('inout_users', JSON.stringify(users));
+        }
+
+        alert('Location saved successfully!');
+      });
+
+      // Populate countries
+      document.addEventListener('DOMContentLoaded', () => {
+        if(window.populateCountrySelects) {
+          window.populateCountrySelects();
+        }
+      });
+
+      // Insert year
+      document.getElementById('year').textContent = new Date().getFullYear().toString();
+    })();
+  </script>
 </body>
 </html>
