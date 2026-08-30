@@ -58,6 +58,14 @@
     .meta-row { display:flex; gap:12px; flex-wrap:wrap; align-items:center; color:var(--muted); font-size:14px; }
     .share-row { display:flex; gap:8px; align-items:center; margin-top:8px; }
     .empty { color:var(--muted); font-style:italic; }
+
+    /* Request modal styles (keeps visual language consistent) */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,0.5);display:none;align-items:center;justify-content:center;padding:20px;z-index:1200}
+    .modal{background:white;border-radius:12px;max-width:520px;width:100%;box-shadow:0 10px 30px rgba(2,6,23,0.12);padding:18px;border:1px solid rgba(15,23,42,0.04)}
+    .modal h3{margin:0 0 8px}
+    .form-row{display:flex;gap:8px}
+    .muted-small{color:var(--muted);font-size:13px}
+
     /* Responsive */
     @media(min-width:900px){
       .profile-grid { grid-template-columns: 2fr 1fr; }
@@ -131,6 +139,46 @@
     </div>
   </main>
 
+  <!-- Request modal (hidden by default) -->
+  <div id="requestModal" class="modal-backdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="requestModalTitle">
+      <h3 id="requestModalTitle">Request Service</h3>
+      <p class="muted-small">Send a service request to this business. Messaging and booking will be added later.</p>
+      <form id="requestForm" style="margin-top:12px">
+        <div class="form-group">
+          <label for="requestService">Service</label>
+          <select id="requestService" required>
+            <option value="">Select a service</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="requestDescription">Description</label>
+          <textarea id="requestDescription" placeholder="Describe what you need" required></textarea>
+        </div>
+        <div class="form-row">
+          <div style="flex:1" class="form-group">
+            <label for="requestDate">Preferred date</label>
+            <input id="requestDate" type="date">
+          </div>
+          <div style="flex:1" class="form-group">
+            <label for="requestTime">Preferred time</label>
+            <input id="requestTime" type="time">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="requestBudget">Budget (optional)</label>
+          <input id="requestBudget" type="text" placeholder="e.g. 100 - 200">
+        </div>
+
+        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
+          <button type="button" id="requestCancel" class="btn ghost">Cancel</button>
+          <button type="submit" class="btn primary">Submit Request</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <footer class="site-footer small">
     <div class="container">
       <small>© <span id="year5"></span> INOUT</small>
@@ -159,10 +207,18 @@
       const bpAddress = document.getElementById('bpAddress');
       const bpHours = document.getElementById('bpHours');
       const bpContact = document.getElementById('bpContact');
-      const bpGallery = document.getElementById('bpGallery');
       const contactBtn = document.getElementById('contactBtn');
       const requestBtn = document.getElementById('requestBtn');
       const shareBtn = document.getElementById('shareBtn');
+
+      const requestModal = document.getElementById('requestModal');
+      const requestForm = document.getElementById('requestForm');
+      const requestService = document.getElementById('requestService');
+      const requestDescription = document.getElementById('requestDescription');
+      const requestDate = document.getElementById('requestDate');
+      const requestTime = document.getElementById('requestTime');
+      const requestBudget = document.getElementById('requestBudget');
+      const requestCancel = document.getElementById('requestCancel');
 
       function showEmptyProfile() {
         document.querySelector('.business-profile').innerHTML = '<div class="card"><p class="empty">Business profile is being completed.</p></div>';
@@ -230,7 +286,7 @@
       if(services.length === 0){
         bpServices.innerHTML = `<li class="empty">No services available yet.</li>`;
       } else {
-        services.forEach(s=>{
+        services.forEach((s, idx)=>{
           const li = document.createElement('li');
           li.className = 'service-item';
           const info = document.createElement('div');
@@ -246,14 +302,45 @@
         });
       }
 
-      // Gallery (photos)
-      if(business.photos && business.photos.length){
-        bpGallery.innerHTML = business.photos.map(p=>`<img src="${p}" style="max-width:100%;border-radius:8px;margin-bottom:8px">`).join('');
-      } else {
-        bpGallery.textContent = 'No photos available.';
+      // Prepare request modal: populate services
+      function openRequestModal(){
+        // require customer login
+        if(window.authRequireLogin) {
+          const ok = window.authRequireLogin();
+          // authRequireLogin may redirect; if there's no session after call, abort
+          const current = window.authGetUser && window.authGetUser();
+          if(!current) return;
+          if(current.accountType !== 'customer'){
+            alert('Please sign in as a customer to request services.');
+            return;
+          }
+        }
+
+        // populate service select
+        requestService.innerHTML = '<option value="">Select a service</option>';
+        const svc = Array.isArray(business.services) ? business.services : [];
+        svc.forEach((s, idx)=>{
+          const opt = document.createElement('option');
+          opt.value = idx;
+          opt.textContent = s.name + (s.price ? ` — ${business.currencySymbol?business.currencySymbol+' ':''}${s.price}` : '');
+          requestService.appendChild(opt);
+        });
+
+        requestDescription.value = '';
+        requestDate.value = '';
+        requestTime.value = '';
+        requestBudget.value = '';
+
+        requestModal.style.display = 'flex';
+        requestModal.setAttribute('aria-hidden','false');
       }
 
-      // Buttons (Contact / Request) - basic behaviors:
+      function closeRequestModal(){
+        requestModal.style.display = 'none';
+        requestModal.setAttribute('aria-hidden','true');
+      }
+
+      // Buttons (Contact / Request) - behaviors:
       contactBtn.addEventListener('click', ()=> {
         // prefer email then phone
         if(business.email) location.href = `mailto:${business.email}`;
@@ -261,10 +348,83 @@
         else alert('Contact information not available.');
       });
 
-      requestBtn.addEventListener('click', ()=> {
-        // Start a basic flow or redirect to bookings / requests page with query
-        const url = `business-dashboard.html?request_for=${encodeURIComponent(business.id)}`;
-        location.href = url;
+      requestBtn.addEventListener('click', (e)=> {
+        e.preventDefault();
+        openRequestModal();
+      });
+
+      requestCancel.addEventListener('click', ()=> closeRequestModal());
+
+      requestForm.addEventListener('submit', (e)=>{
+        e.preventDefault();
+        // Ensure user is signed in and a customer
+        const current = window.authGetUser && window.authGetUser();
+        if(!current || current.accountType !== 'customer'){
+          alert('You must be signed in as a customer to submit a request.');
+          return;
+        }
+
+        const svcIdx = requestService.value;
+        if(svcIdx === ''){ alert('Please select a service.'); return; }
+        const svcObj = (business.services || [])[parseInt(svcIdx,10)];
+
+        const req = {
+          id: 'req_' + Date.now(),
+          serviceId: svcIdx,
+          serviceName: svcObj ? svcObj.name : '',
+          description: requestDescription.value.trim(),
+          preferredDate: requestDate.value || null,
+          preferredTime: requestTime.value || null,
+          budget: requestBudget.value.trim() || null,
+          status: 'Pending',
+          customerId: current.id,
+          businessId: business.id,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          // placeholder fields for future integrations
+          threadId: null,
+          bookingId: null
+        };
+
+        // Persist: update inout_users for both business and customer
+        try{
+          const usersRaw = localStorage.getItem('inout_users') || '[]';
+          const all = JSON.parse(usersRaw);
+
+          // find and update business
+          const bizIdx = all.findIndex(u => String(u.id) === String(business.id));
+          if(bizIdx !== -1){
+            if(!Array.isArray(all[bizIdx].requests)) all[bizIdx].requests = [];
+            all[bizIdx].requests.push(req);
+          }
+
+          // find and update customer
+          const custIdx = all.findIndex(u => String(u.id) === String(current.id));
+          if(custIdx !== -1){
+            if(!Array.isArray(all[custIdx].requests)) all[custIdx].requests = [];
+            all[custIdx].requests.push(req);
+          }
+
+          localStorage.setItem('inout_users', JSON.stringify(all));
+
+          // update session if current user is the customer
+          const session = JSON.parse(localStorage.getItem('inout_user') || 'null');
+          if(session && String(session.id) === String(current.id)){
+            if(!Array.isArray(session.requests)) session.requests = [];
+            session.requests.push(req);
+            localStorage.setItem('inout_user', JSON.stringify(session));
+          }
+
+          // success UI
+          alert('Your request has been sent successfully.');
+          closeRequestModal();
+
+          // notify other tabs by bumping inout_users_sync
+          try{ localStorage.setItem('inout_users_sync', Date.now().toString()); }catch(e){}
+        }catch(err){
+          console.error('Failed to save request', err);
+          alert('Unable to send request. Try again.');
+        }
       });
 
       // Share
