@@ -6,6 +6,68 @@
   <title>Business Profile — INOUT</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/styles.css">
+  <style>
+    /* Small, self-contained additions that keep brand styles */
+    .profile-hero {
+      background: var(--card);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(15,23,42,0.04);
+    }
+    .cover {
+      width:100%;
+      height:160px;
+      object-fit:cover;
+      background: linear-gradient(135deg,#f3f4f6,#e5e7eb);
+    }
+    .hero-inner {
+      display:flex;
+      gap:16px;
+      padding:16px;
+      align-items:flex-start;
+    }
+    .logo {
+      width:96px;
+      height:96px;
+      border-radius:12px;
+      background:linear-gradient(135deg,#9CA3AF33,#6B728077);
+      flex:0 0 96px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      color:var(--muted);
+      font-size:18px;
+      overflow:hidden;
+    }
+    .hero-meta { flex:1; min-width:0; }
+    .hero-meta h1 { margin:0; font-size:20px; word-break:break-word; }
+    .muted { color:var(--muted); }
+    .actions { margin-top:8px; display:flex; gap:8px; flex-wrap:wrap; }
+    .profile-grid {
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:16px;
+      margin-top:16px;
+    }
+    .card { background:var(--card); border-radius:12px; padding:16px; border:1px solid rgba(15,23,42,0.04); }
+    .services-list { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:12px; }
+    .service-item { display:flex; justify-content:space-between; gap:12px; align-items:center; }
+    .service-info { flex:1; min-width:0; }
+    .price { font-weight:700; white-space:nowrap; margin-left:8px; }
+    .meta-row { display:flex; gap:12px; flex-wrap:wrap; align-items:center; color:var(--muted); font-size:14px; }
+    .share-row { display:flex; gap:8px; align-items:center; margin-top:8px; }
+    .empty { color:var(--muted); font-style:italic; }
+    /* Responsive */
+    @media(min-width:900px){
+      .profile-grid { grid-template-columns: 2fr 1fr; }
+      .hero-inner { padding:20px; }
+    }
+    @media(max-width:420px){
+      .logo { width:72px; height:72px; }
+      .cover { height:120px; }
+    }
+  </style>
 </head>
 <body>
   <header class="site-header small">
@@ -19,26 +81,54 @@
   </header>
 
   <main class="container business-profile">
-    <div class="profile-header">
-      <div class="avatar">DB</div>
-      <div>
-        <h1 id="bpName">Demo Business</h1>
-        <p id="bpCategory" class="muted">Category · City</p>
-        <p id="bpDesc">This is a demo business profile. Use this page to expand features (hours, contact, services, gallery).</p>
-        <div class="actions">
-          <a class="btn primary">Message</a>
-          <a class="btn ghost">Visit Website</a>
+    <div class="profile-hero card" id="profileHero">
+      <img id="bpCover" class="cover" alt="Business cover image" src="">
+      <div class="hero-inner">
+        <div class="logo" id="bpLogo">DB</div>
+        <div class="hero-meta">
+          <h1 id="bpName">Business name</h1>
+          <div class="meta-row">
+            <div id="bpCategory" class="muted">Category</div>
+            <div id="bpLocation" class="muted">· Location</div>
+            <div id="bpCurrency" class="muted">· Currency</div>
+          </div>
+          <p id="bpShortDesc" class="muted" style="margin-top:8px;">Short description</p>
+          <div class="actions" style="margin-top:8px;">
+            <a id="contactBtn" class="btn primary" role="button">Contact</a>
+            <a id="requestBtn" class="btn ghost" role="button">Request Service</a>
+            <button id="shareBtn" class="btn ghost" aria-label="Share business">Share</button>
+          </div>
         </div>
       </div>
     </div>
 
-    <section class="profile-section">
-      <h3>Services</h3>
-      <ul id="bpServices" class="muted">
-        <li>Service 1</li>
-        <li>Service 2</li>
-      </ul>
-    </section>
+    <div class="profile-grid">
+      <section class="card" id="aboutSection">
+        <h3>About</h3>
+        <div id="bpAbout" class="muted">About information</div>
+      </section>
+
+      <aside class="card" id="detailsAside">
+        <h4>Opening Hours</h4>
+        <div id="bpHours" class="muted">—</div>
+
+        <h4 style="margin-top:12px">Contact</h4>
+        <div id="bpContact" class="muted"></div>
+
+        <h4 style="margin-top:12px">Address</h4>
+        <div id="bpAddress" class="muted"></div>
+      </aside>
+
+      <section class="card" id="servicesSection">
+        <h3>Services</h3>
+        <ul id="bpServices" class="services-list"></ul>
+      </section>
+
+      <section class="card" id="gallerySection">
+        <h3>Gallery</h3>
+        <div id="bpGallery" class="muted">No photos available.</div>
+      </section>
+    </div>
   </main>
 
   <footer class="site-footer small">
@@ -48,5 +138,156 @@
   </footer>
 
   <script src="assets/js/app.js"></script>
+  <script>
+    // Render business profile by reading persisted business data (no fakes)
+    (function(){
+      function getQueryParam(name){
+        const params = new URLSearchParams(location.search);
+        return params.get(name);
+      }
+
+      const id = getQueryParam('id');
+      const bpName = document.getElementById('bpName');
+      const bpCategory = document.getElementById('bpCategory');
+      const bpShortDesc = document.getElementById('bpShortDesc');
+      const bpAbout = document.getElementById('bpAbout');
+      const bpLogo = document.getElementById('bpLogo');
+      const bpCover = document.getElementById('bpCover');
+      const bpServices = document.getElementById('bpServices');
+      const bpCurrency = document.getElementById('bpCurrency');
+      const bpLocation = document.getElementById('bpLocation');
+      const bpAddress = document.getElementById('bpAddress');
+      const bpHours = document.getElementById('bpHours');
+      const bpContact = document.getElementById('bpContact');
+      const bpGallery = document.getElementById('bpGallery');
+      const contactBtn = document.getElementById('contactBtn');
+      const requestBtn = document.getElementById('requestBtn');
+      const shareBtn = document.getElementById('shareBtn');
+
+      function showEmptyProfile() {
+        document.querySelector('.business-profile').innerHTML = '<div class="card"><p class="empty">Business profile is being completed.</p></div>';
+      }
+
+      const usersRaw = localStorage.getItem('inout_users') || '[]';
+      const users = JSON.parse(usersRaw);
+      const business = users.find(u => String(u.id) === String(id));
+
+      if(!business){
+        // No business found => display generic message
+        showEmptyProfile();
+        return;
+      }
+
+      // Basic info
+      bpName.textContent = business.businessName || business.name || 'Unnamed business';
+      bpCategory.textContent = (business.category || 'Uncategorized');
+      bpShortDesc.textContent = (business.profile && business.profile.description) ? business.profile.description : '';
+      bpAbout.textContent = (business.profile && business.profile.about) ? business.profile.about : (business.profile && business.profile.description) || '';
+
+      // Logo / cover
+      if(business.profile && business.profile.logoUrl){
+        bpLogo.style.backgroundImage = `url(${business.profile.logoUrl})`;
+        bpLogo.style.backgroundSize = 'cover';
+        bpLogo.textContent = '';
+      } else {
+        // fallback to initials
+        const initials = (business.businessName || business.name || ' ').split(' ').map(s=>s[0]).join('').slice(0,2).toUpperCase();
+        bpLogo.textContent = initials;
+        bpLogo.style.backgroundImage = '';
+      }
+      if(business.profile && business.profile.coverUrl){
+        bpCover.src = business.profile.coverUrl;
+      } else {
+        bpCover.src = ''; // leave gradient
+        bpCover.style.background = '';
+      }
+
+      // Contact & address
+      bpContact.innerHTML = '';
+      if(business.phone) bpContact.innerHTML += `<div>📞 ${business.phone}</div>`;
+      if(business.email) bpContact.innerHTML += `<div>✉️ ${business.email}</div>`;
+      bpAddress.textContent = [business.location && business.location.address, business.city, business.state, business.country].filter(Boolean).join(', ') || '—';
+
+      // Currency
+      bpCurrency.textContent = business.currency || (business.profile && business.profile.currency) || '';
+
+      // Hours
+      if(business.hours){
+        const lines = [];
+        ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'].forEach(day=>{
+          if(business.hours[day] && business.hours[day].open){
+            lines.push(`${day.charAt(0).toUpperCase()+day.slice(1)}: ${business.hours[day].open} - ${business.hours[day].close}`);
+          }
+        });
+        bpHours.textContent = lines.length ? lines.join(' · ') : 'Not specified';
+      } else {
+        bpHours.textContent = 'Not specified';
+      }
+
+      // Services (only those on the business object)
+      bpServices.innerHTML = '';
+      const services = Array.isArray(business.services) ? business.services : [];
+      if(services.length === 0){
+        bpServices.innerHTML = `<li class="empty">No services available yet.</li>`;
+      } else {
+        services.forEach(s=>{
+          const li = document.createElement('li');
+          li.className = 'service-item';
+          const info = document.createElement('div');
+          info.className = 'service-info';
+          info.innerHTML = `<strong>${s.name}</strong><div class="muted" style="font-size:13px">${s.description || ''}</div>`;
+          const price = document.createElement('div');
+          price.className = 'price';
+          const symbol = (business.currencySymbol) ? business.currencySymbol : (business.currency || '');
+          price.textContent = `${symbol ? symbol + ' ' : ''}${s.price || ''} ${business.currency || ''}`.trim();
+          li.appendChild(info);
+          li.appendChild(price);
+          bpServices.appendChild(li);
+        });
+      }
+
+      // Gallery (photos)
+      if(business.photos && business.photos.length){
+        bpGallery.innerHTML = business.photos.map(p=>`<img src="${p}" style="max-width:100%;border-radius:8px;margin-bottom:8px">`).join('');
+      } else {
+        bpGallery.textContent = 'No photos available.';
+      }
+
+      // Buttons (Contact / Request) - basic behaviors:
+      contactBtn.addEventListener('click', ()=> {
+        // prefer email then phone
+        if(business.email) location.href = `mailto:${business.email}`;
+        else if(business.phone) location.href = `tel:${business.phone}`;
+        else alert('Contact information not available.');
+      });
+
+      requestBtn.addEventListener('click', ()=> {
+        // Start a basic flow or redirect to bookings / requests page with query
+        const url = `business-dashboard.html?request_for=${encodeURIComponent(business.id)}`;
+        location.href = url;
+      });
+
+      // Share
+      shareBtn.addEventListener('click', async () => {
+        const shareUrl = location.href;
+        const title = bpName.textContent;
+        if(navigator.share){
+          try{ await navigator.share({title, url:shareUrl}); }catch(e){}
+        } else {
+          // fallback: copy to clipboard
+          try{ await navigator.clipboard.writeText(shareUrl); alert('Link copied to clipboard'); }catch(e){ prompt('Copy this link', shareUrl); }
+        }
+      });
+
+      // Ensure the page updates if localStorage changes in another tab (e.g., business dashboard)
+      window.addEventListener('storage', (ev)=>{
+        if(ev.key === 'inout_users'){
+          // simple refresh to reflect changes
+          location.reload();
+        }
+      });
+
+    })();
+  </script>
 </body>
 </html>

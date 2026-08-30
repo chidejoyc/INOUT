@@ -30,6 +30,49 @@
     </div>
   </footer>
 
+  <script>
+    // Render businesses list from persisted users (no fake data)
+    (function(){
+      function escapeHtml(s){ return String(s||'').replace(/[&<>\"']/g, function(m){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[m]); }); }
+      const list = document.getElementById('businessList');
+      const usersRaw = localStorage.getItem('inout_users') || '[]';
+      let users = [];
+      try{ users = JSON.parse(usersRaw); }catch(e){ users = []; }
+
+      const businesses = users.filter(u => u && (u.accountType === 'business' || u.isBusiness || u.businessName || u.profile));
+      if(businesses.length === 0){
+        list.innerHTML = `<div class="card"><h3 style="margin:0 0 8px">No businesses found yet</h3><p class="muted">Businesses will appear here once accounts are created.</p></div>`;
+      } else {
+        list.innerHTML = businesses.map(b => {
+          const id = encodeURIComponent(b.id);
+          const name = escapeHtml(b.businessName || b.name || 'Unnamed');
+          const category = escapeHtml(b.category || '');
+          const city = escapeHtml(b.city || b.location && b.location.city || '');
+          const short = escapeHtml((b.profile && b.profile.description) || '');
+          const logo = (b.profile && b.profile.logoUrl) ? `background-image:url(${b.profile.logoUrl});background-size:cover` : '';
+          const initials = escapeHtml((b.businessName||' ').split(' ').map(s=>s[0]).join('').slice(0,2).toUpperCase());
+          return `<article class="card" data-id="${b.id}">
+            <a href="business-profile.html?id=${id}" style="text-decoration:none;color:inherit;display:flex;gap:12px;align-items:center">
+              <div class="logo-sm" style="${logo};width:64px;height:64px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--muted);">
+                ${logo? '' : initials}
+              </div>
+              <div style="flex:1;min-width:0">
+                <h4 style="margin:0 0 4px">${name}</h4>
+                <div class="muted" style="font-size:13px">${category}${city?` · ${city}`:''}</div>
+                <p class="muted" style="margin:8px 0 0;font-size:13px">${short}</p>
+              </div>
+            </a>
+          </article>`;
+        }).join('');
+      }
+
+      // Update if other tabs change user list
+      window.addEventListener('storage', (ev)=>{
+        if(ev.key === 'inout_users') location.reload();
+      });
+    })();
+  </script>
+
   <script src="assets/js/app.js"></script>
 </body>
 </html>
