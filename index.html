@@ -1,165 +1,54 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>INOUT — Everything You Need, All in One Place</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/styles.css">
-  <meta name="description" content="Discover trusted businesses and services. Create profiles, connect with customers. INOUT — Everything You Need, All in One Place.">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="INOUT — a calmer way to stay on track with your savings goals." />
+  <title>INOUT — Save with intention</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','ui-sans-serif','system-ui']},colors:{ink:'#193b3a',mint:'#dff5ea',brand:'#147d68',sky:'#e7f4f7',cream:'#fbfaf5'}}}};</script>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>body{background:#fbfaf5;color:#193b3a}*{box-sizing:border-box}.shadow-soft{box-shadow:0 18px 45px rgba(25,59,58,.08)}.progress{transition:width .5s ease}.hide-scroll::-webkit-scrollbar{display:none}</style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="logo" href="index.html" aria-label="INOUT home">
-        <img src="assets/logo.svg" alt="INOUT logo" width="36" height="36">
-        <span class="brand-name">INOUT</span>
-      </a>
-
-      <nav class="main-nav" aria-label="Primary">
-        <a href="index.html" class="nav-link active">Home</a>
-        <a href="explore.html" class="nav-link">Explore</a>
-        <a href="services.html" class="nav-link">Services</a>
-        <a href="businesses.html" class="nav-link">Businesses</a>
-        <a href="about.html" class="nav-link">About</a>
-      </nav>
-
-      <div class="header-actions">
-        <div class="selectors" style="display:flex;gap:8px;align-items:center">
-          <!-- Global location selector (search country, city, or area) -->
-          <label class="sr-only" for="whereInput">Where are you?</label>
-          <input id="whereInput" class="select small" list="whereList" placeholder="Where are you?" aria-label="Where are you? Search country, city, or area">
-
-          <datalist id="whereList"></datalist>
-
-          <!-- Currency selector remains -->
-          <label class="sr-only" for="currency">Currency</label>
-          <select id="currency" class="select small" aria-label="Select currency"></select>
-        </div>
-
-        <a href="login.html" class="btn ghost">Login</a>
-        <a href="signup.html" class="btn primary">Sign Up</a>
+  <div id="root"></div>
+  <script type="text/babel">
+    const {useState}=React;
+    const money=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(n||0);
+    const fmt=d=>new Date(d+'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+    const dateOnly=d=>new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10);
+    const addMonths=(date,months)=>{const d=new Date(date+'T00:00:00');d.setMonth(d.getMonth()+Number(months));return dateOnly(d)};
+    const addPeriod=(date,frequency)=>{const d=new Date(date+'T00:00:00');if(frequency==='weekly')d.setDate(d.getDate()+7);else d.setMonth(d.getMonth()+1);return dateOnly(d)};
+    const daysLeft=d=>Math.max(0,Math.ceil((new Date(d)-new Date())/86400000));
+    const seed=[{id:1,name:'New laptop fund',amount:150,frequency:'weekly',start:'2026-08-07',maturity:'2026-11-07',duration:3,status:'active',contributions:[{date:'2026-08-07',amount:150},{date:'2026-08-14',amount:150},{date:'2026-08-21',amount:150}]},{id:2,name:'December getaway',amount:300,frequency:'monthly',start:'2026-07-01',maturity:'2026-12-01',duration:6,status:'active',contributions:[{date:'2026-07-01',amount:300},{date:'2026-08-01',amount:300}]}];
+    function App(){
+      const [user,setUser]=useState(()=>JSON.parse(localStorage.getItem('inout_saver')||'null'));
+      const [plans,setPlans]=useState(()=>JSON.parse(localStorage.getItem('inout_plans')||JSON.stringify(seed)));
+      const [screen,setScreen]=useState(user?'dashboard':'landing'); const [selected,setSelected]=useState(null); const [notice,setNotice]=useState(false);
+      const persist=p=>{setPlans(p);localStorage.setItem('inout_plans',JSON.stringify(p))};
+      const login=name=>{const u={name,email:name.toLowerCase().replace(/ /g,'.')+'@example.com'};setUser(u);localStorage.setItem('inout_saver',JSON.stringify(u));setScreen('dashboard')};
+      const logout=()=>{setUser(null);localStorage.removeItem('inout_saver');setScreen('landing')};
+      const createPlan=data=>{const p={...data,id:Date.now(),status:'active',contributions:[]};persist([p,...plans]);setScreen('dashboard')};
+      const markPaid=id=>{persist(plans.map(p=>p.id===id?{...p,contributions:[...p.contributions,{date:dateOnly(new Date()),amount:p.amount}]}:p));setNotice(true);setTimeout(()=>setNotice(false),2800)};
+      const current=plans.find(p=>p.id===selected);
+      return <div className="min-h-screen">
+        <header className="sticky top-0 z-20 border-b border-[#e7eee8] bg-[#fbfaf5]/90 backdrop-blur"><div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4"><button onClick={()=>setScreen(user?'dashboard':'landing')} className="flex items-center gap-2 text-xl font-extrabold tracking-tight"><span className="grid h-9 w-9 place-items-center rounded-xl bg-ink text-sm text-white">↗</span> INOUT</button>{user&&<div className="flex items-center gap-3"><button onClick={()=>setScreen('notifications')} className="relative rounded-full p-2 hover:bg-mint">♢<span className="absolute right-1 top-1 h-2 w-2 rounded-full bg-[#ef8b66]"></span></button><span className="hidden text-sm text-slate-500 sm:block">Hi, {user.name.split(' ')[0]}</span><button onClick={logout} className="rounded-full border border-[#d6e4da] px-3 py-1.5 text-sm font-semibold">Log out</button></div>}</div></header>
+        {notice&&<div className="fixed right-5 top-20 z-30 rounded-2xl bg-ink px-5 py-3 text-sm font-semibold text-white shadow-soft">Payment logged. Nice work! ✨</div>}
+        {screen==='landing'&&<Landing onStart={()=>setScreen('auth')}/>} {screen==='auth'&&<Auth onLogin={login}/>} {screen==='dashboard'&&<Dashboard plans={plans} onCreate={()=>setScreen('create')} onOpen={id=>{setSelected(id);setScreen('detail')}} onNotify={()=>setScreen('notifications')}/>} {screen==='create'&&<Create onBack={()=>setScreen('dashboard')} onCreate={createPlan}/>} {screen==='detail'&&current&&<Detail plan={current} onBack={()=>setScreen('dashboard')} onPaid={()=>markPaid(current.id)} onPause={()=>{persist(plans.map(p=>p.id===current.id?{...p,status:p.status==='paused'?'active':'paused'}:p))}}/>} {screen==='notifications'&&<Notifications onBack={()=>setScreen('dashboard')}/>} 
+        <footer className="mx-auto max-w-6xl px-5 py-10 text-center text-xs text-slate-400">INOUT is a tracking and reminder tool. We never hold, move, or access your money.</footer>
       </div>
-    </div>
-  </header>
-
-  <main>
-    <section class="hero">
-      <div class="container hero-inner">
-        <div class="hero-copy">
-          <!-- Updated hero per your requirements -->
-          <h1 class="hero-title" style="margin-bottom:6px; font-size:28px; line-height:1.15;">
-            <div style="font-weight:800;letter-spacing:0.6px;">INOUT</div>
-            <div style="font-weight:600;font-size:20px;margin-top:8px">Everything You Need, All in One Place.</div>
-          </h1>
-
-          <p class="hero-sub">Discover businesses and services wherever you are. Connect with providers and get things done.</p>
-
-          <form id="searchForm" class="search-form" action="explore.html" method="get" role="search">
-            <label class="sr-only" for="q">What are you looking for?</label>
-            <input id="q" name="q" class="search-input" type="search" placeholder="What are you looking for?">
-
-            <label class="sr-only" for="locationInput">Where are you?</label>
-            <input id="locationInput" name="location" class="search-location" type="text" placeholder="Search country, city, or area">
-
-            <button type="submit" class="btn search-btn">Search</button>
-          </form>
-
-          <div class="popular">
-            <strong>Popular:</strong>
-            <div class="chips">
-              <button class="chip" data-term="Plumber">Plumber</button>
-              <button class="chip" data-term="Hair Stylist">Hair Stylist</button>
-              <button class="chip" data-term="Catering">Catering</button>
-              <button class="chip" data-term="Photographer">Photographer</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="hero-visual" aria-hidden="true">
-          <div class="mock-card">Trusted local businesses, verified listings, and modern profiles — built for a global audience.</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="featured container">
-      <div class="section-head">
-        <h2>Featured Businesses</h2>
-        <a href="businesses.html" class="link-muted">View all</a>
-      </div>
-
-      <div id="featuredList" class="cards"></div>
-    </section>
-
-    <section class="categories container">
-      <h3>Popular categories</h3>
-      <div class="grid categories-grid">
-        <a class="category-card" href="explore.html?q=Services">Services</a>
-        <a class="category-card" href="explore.html?q=Beauty">Beauty</a>
-        <a class="category-card" href="explore.html?q=Automotive">Automotive</a>
-        <a class="category-card" href="explore.html?q=Food+%26+Catering">Food &amp; Catering</a>
-        <a class="category-card" href="explore.html?q=Photography">Photography</a>
-        <a class="category-card" href="explore.html?q=Education">Education</a>
-        <a class="category-card" href="explore.html?q=Technology">Technology</a>
-        <a class="category-card" href="explore.html?q=Events">Events</a>
-        <a class="category-card" href="explore.html?q=Shopping">Shopping</a>
-        <a class="category-card" href="explore.html?q=Professional+Services">Professional Services</a>
-      </div>
-    </section>
-
-    <section class="cta container">
-      <div class="cta-grid">
-        <div class="cta-card">
-          <h4>Find a Service</h4>
-          <p>Quickly discover professionals in your selected area and connect with confidence.</p>
-          <a href="explore.html" class="btn primary">Find a Service</a>
-        </div>
-
-        <div class="cta-card alt">
-          <h4>List Your Business</h4>
-          <p>Create a professional profile, connect with customers, and grow your presence.</p>
-          <a href="signup.html" class="btn ghost">List Your Business</a>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container footer-grid">
-      <div>
-        <a class="logo footer-logo" href="index.html"><img src="assets/logo.svg" alt="" width="28"> <span>INOUT</span></a>
-        <p class="muted">Everything You Need, All in One Place.</p>
-      </div>
-
-      <div>
-        <h5>Categories</h5>
-        <ul class="footer-links">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="services.html">Services</a></li>
-          <li><a href="explore.html?q=Beauty">Beauty</a></li>
-          <li><a href="explore.html?q=Automotive">Automotive</a></li>
-          <li><a href="explore.html?q=Food+%26+Catering">Food &amp; Catering</a></li>
-          <li><a href="explore.html?q=Photography">Photography</a></li>
-          <li><a href="explore.html?q=Education">Education</a></li>
-          <li><a href="explore.html?q=Technology">Technology</a></li>
-          <li><a href="explore.html?q=Events">Events</a></li>
-          <li><a href="explore.html?q=Shopping">Shopping</a></li>
-          <li><a href="explore.html?q=Professional+Services">Professional Services</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h5>Global support</h5>
-        <p class="muted">INOUT is a global platform. Select your country, city, and currency above to personalize results.</p>
-        <a href="contact.html" class="link-muted">Contact</a>
-      </div>
-    </div>
-
-    <div class="container copyright">
-      <small>© <span id="year"></span> INOUT — Built for global expansion.</small>
-    </div>
-  </footer>
-
-  <script src="assets/js/app.js"></script>
+    }
+    function Landing({onStart}){return <main><section className="mx-auto grid max-w-6xl gap-12 px-5 pb-20 pt-20 md:grid-cols-[1.05fr_.95fr] md:items-center md:pt-28"><div><div className="mb-6 inline-flex items-center gap-2 rounded-full bg-mint px-3 py-1.5 text-sm font-semibold text-brand"><span>✦</span> Your money. Your plan. Your pace.</div><h1 className="max-w-xl text-5xl font-extrabold leading-[1.04] tracking-tight md:text-7xl">Small steps.<br/><span className="text-brand">Big wins.</span></h1><p className="mt-6 max-w-lg text-lg leading-8 text-slate-500">INOUT helps you build a savings habit with simple plans, gentle reminders, and a clear view of your progress.</p><button onClick={onStart} className="mt-8 rounded-2xl bg-ink px-6 py-4 font-bold text-white shadow-soft hover:-translate-y-0.5">Start a savings plan <span className="ml-5">→</span></button><p className="mt-5 text-sm text-slate-400">No bank connection. No transfers. Just intentional progress.</p></div><div className="relative rounded-[2.5rem] bg-[#dff5ea] p-6 shadow-soft md:p-10"><div className="absolute -right-3 -top-4 rounded-2xl bg-white px-4 py-3 text-sm font-bold shadow-soft">✦ On track</div><div className="rounded-3xl bg-white p-6"><div className="flex justify-between"><div><p className="text-sm text-slate-400">Your progress</p><h3 className="mt-1 text-2xl font-extrabold">Weekend getaway</h3></div><span className="rounded-full bg-mint px-3 py-1 text-sm font-bold text-brand">68%</span></div><div className="mt-8 h-4 rounded-full bg-[#edf2ed]"><div className="h-4 w-[68%] rounded-full bg-brand"></div></div><div className="mt-5 flex justify-between text-sm"><span className="font-bold">$1,020 saved</span><span className="text-slate-400">$1,500 goal</span></div><div className="mt-8 grid grid-cols-2 gap-3"><div className="rounded-2xl bg-sky p-4"><p className="text-xs text-slate-500">Next payment</p><p className="mt-1 font-bold">In 3 days</p></div><div className="rounded-2xl bg-[#fff0e7] p-4"><p className="text-xs text-slate-500">Days remaining</p><p className="mt-1 font-bold">42 days</p></div></div></div></div></section><section className="mx-auto max-w-6xl px-5 pb-10"><div className="grid gap-4 md:grid-cols-3">{[['◎','Make a plan','Choose an amount and a timeline that feels right.'],['⌁','Build the habit','Get a gentle nudge before each contribution.'],['✓','Celebrate progress','See every step add up to something meaningful.']].map(x=><div className="rounded-3xl border border-[#e6eee7] bg-white p-6" key={x[1]}><span className="text-2xl text-brand">{x[0]}</span><h3 className="mt-5 font-bold">{x[1]}</h3><p className="mt-2 text-sm leading-6 text-slate-500">{x[2]}</p></div>)}</div></section></main>}
+    function Auth({onLogin}){const [name,setName]=useState('');return <main className="mx-auto max-w-md px-5 py-20"><div className="mb-8"><p className="font-bold text-brand">WELCOME TO INOUT</p><h1 className="mt-3 text-4xl font-extrabold">Let’s make it happen.</h1><p className="mt-3 text-slate-500">Create your account to start tracking your savings.</p></div><form onSubmit={e=>{e.preventDefault();onLogin(name||'Alex Morgan')}} className="rounded-3xl bg-white p-6 shadow-soft"><label className="text-sm font-bold">Your name<input required value={name} onChange={e=>setName(e.target.value)} placeholder="Alex Morgan" className="mt-2 w-full rounded-xl border border-[#dce8df] p-3 outline-none focus:border-brand"/></label><label className="mt-5 block text-sm font-bold">Email<input type="email" required placeholder="you@example.com" className="mt-2 w-full rounded-xl border border-[#dce8df] p-3 outline-none focus:border-brand"/></label><label className="mt-5 block text-sm font-bold">Password<input type="password" required minLength="6" placeholder="••••••••" className="mt-2 w-full rounded-xl border border-[#dce8df] p-3 outline-none focus:border-brand"/></label><button className="mt-6 w-full rounded-xl bg-ink py-3.5 font-bold text-white">Create account</button><p className="mt-5 text-center text-xs text-slate-400">By continuing, you agree to use INOUT as a tracking tool only.</p></form></main>}
+    function Dashboard({plans,onCreate,onOpen}){return <main className="mx-auto max-w-6xl px-5 py-10"><div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end"><div><p className="text-sm font-bold uppercase tracking-widest text-brand">Your space</p><h1 className="mt-2 text-4xl font-extrabold">Savings dashboard</h1><p className="mt-2 text-slate-500">A little consistency goes a long way.</p></div><button onClick={onCreate} className="rounded-xl bg-ink px-5 py-3 font-bold text-white">+ New plan</button></div><div className="mt-9 grid gap-5 md:grid-cols-3"><div className="rounded-3xl bg-ink p-6 text-white"><p className="text-sm text-[#b9d5c9]">Total saved</p><p className="mt-3 text-4xl font-extrabold">{money(plans.reduce((a,p)=>a+p.contributions.reduce((x,c)=>x+c.amount,0),0))}</p><p className="mt-3 text-sm text-[#b9d5c9]">Across {plans.length} active plans</p></div><div className="rounded-3xl bg-mint p-6"><p className="text-sm text-brand">Active plans</p><p className="mt-3 text-4xl font-extrabold">{plans.filter(p=>p.status==='active').length}</p><p className="mt-3 text-sm text-slate-500">Keep showing up</p></div><div className="rounded-3xl bg-sky p-6"><p className="text-sm text-slate-500">Next reminder</p><p className="mt-3 text-2xl font-extrabold">In 2 days</p><p className="mt-3 text-sm text-slate-500">We’ll nudge you gently</p></div></div><div className="mt-10 flex items-center justify-between"><h2 className="text-xl font-extrabold">Your plans</h2><span className="text-sm text-slate-400">{plans.length} total</span></div><div className="mt-4 grid gap-5 lg:grid-cols-2">{plans.map(p=><PlanCard key={p.id} p={p} onOpen={onOpen}/>)}</div></main>}
+    function PlanCard({p,onOpen}){const saved=p.contributions.reduce((a,c)=>a+c.amount,0), target=Math.max(p.amount*(p.frequency==='weekly'?Math.round((new Date(p.maturity)-new Date(p.start))/604800000):Math.round((new Date(p.maturity)-new Date(p.start))/2592000000)),p.amount), pct=Math.min(100,Math.round(saved/target*100));return <button onClick={()=>onOpen(p.id)} className="w-full rounded-3xl border border-[#e4eee7] bg-white p-6 text-left shadow-soft transition hover:-translate-y-1"><div className="flex items-start justify-between"><div><p className="text-sm text-slate-400">{p.frequency==='weekly'?'Weekly':'Monthly'} contributions</p><h3 className="mt-1 text-xl font-extrabold">{p.name}</h3></div><span className={'rounded-full px-3 py-1 text-xs font-bold '+(p.status==='paused'?'bg-[#fff0e7] text-[#bd6a45]':'bg-mint text-brand')}>{p.status}</span></div><div className="mt-7 flex items-end justify-between"><p className="text-3xl font-extrabold">{money(saved)}<span className="text-base font-medium text-slate-400"> saved</span></p><span className="font-bold text-brand">{pct}%</span></div><div className="mt-3 h-3 rounded-full bg-[#edf2ed]"><div className="progress h-3 rounded-full bg-brand" style={{width:pct+'%'}}></div></div><div className="mt-5 flex justify-between text-sm text-slate-500"><span>Next: {fmt(addPeriod(p.contributions.at(-1)?.date||p.start,p.frequency))}</span><span>{daysLeft(p.maturity)} days left</span></div></button>}
+    function Create({onBack,onCreate}){const [name,setName]=useState('');const [amount,setAmount]=useState('');const [frequency,setFrequency]=useState('weekly');const [duration,setDuration]=useState('3');const [start,setStart]=useState(dateOnly(new Date()));return <main className="mx-auto max-w-2xl px-5 py-10"><button onClick={onBack} className="text-sm font-bold text-slate-500">← Back to dashboard</button><h1 className="mt-7 text-4xl font-extrabold">Create a savings plan</h1><p className="mt-2 text-slate-500">Give your goal a name. We’ll handle the dates and math.</p><form onSubmit={e=>{e.preventDefault();onCreate({name,amount:Number(amount),frequency,start,maturity:addMonths(start,duration),duration})}} className="mt-8 rounded-3xl bg-white p-6 shadow-soft sm:p-8"><label className="text-sm font-bold">Plan name<input required value={name} onChange={e=>setName(e.target.value)} placeholder="e.g. Emergency fund" className="field"/></label><div className="mt-5 grid gap-5 sm:grid-cols-2"><label className="text-sm font-bold">Contribution amount<input required min="1" type="number" value={amount} onChange={e=>setAmount(e.target.value)} placeholder="$ 0" className="field"/></label><label className="text-sm font-bold">Frequency<select value={frequency} onChange={e=>setFrequency(e.target.value)} className="field"><option value="weekly">Weekly</option><option value="monthly">Monthly</option></select></label></div><label className="mt-5 block text-sm font-bold">Start date<input required type="date" value={start} onChange={e=>setStart(e.target.value)} className="field"/></label><div className="mt-5"><p className="text-sm font-bold">Lock duration</p><div className="mt-2 grid grid-cols-3 gap-2">{['3','6','12'].map(x=><button type="button" key={x} onClick={()=>setDuration(x)} className={'rounded-xl border py-3 text-sm font-bold '+(duration===x?'border-brand bg-mint text-brand':'border-[#dce8df]')}>{x} months</button>)}</div></div>{amount&&<div className="mt-6 rounded-2xl bg-sky p-4 text-sm"><div className="flex justify-between"><span className="text-slate-500">Maturity date</span><b>{fmt(addMonths(start,duration))}</b></div><div className="mt-2 flex justify-between"><span className="text-slate-500">Estimated target</span><b>{money(Number(amount)*(frequency==='weekly'?Math.round((new Date(addMonths(start,duration))-new Date(start))/604800000):Number(duration)))}</b></div></div>}<button className="mt-7 w-full rounded-xl bg-ink py-4 font-bold text-white">Create plan</button></form></main>}
+    function Detail({plan,onBack,onPaid,onPause}){const saved=plan.contributions.reduce((a,c)=>a+c.amount,0);return <main className="mx-auto max-w-3xl px-5 py-10"><button onClick={onBack} className="text-sm font-bold text-slate-500">← Back to dashboard</button><div className="mt-7 flex flex-col justify-between gap-5 sm:flex-row sm:items-end"><div><span className="rounded-full bg-mint px-3 py-1 text-xs font-bold text-brand">{plan.status}</span><h1 className="mt-4 text-4xl font-extrabold">{plan.name}</h1><p className="mt-2 text-slate-500">{money(plan.amount)} · {plan.frequency}</p></div><button disabled={plan.status==='paused'||new Date()>=new Date(plan.maturity)} onClick={onPaid} className="rounded-xl bg-brand px-5 py-3 font-bold text-white disabled:cursor-not-allowed disabled:bg-slate-300">{new Date()>=new Date(plan.maturity)?'Plan matured':'Mark payment made'}</button></div><div className="mt-8 rounded-3xl bg-ink p-6 text-white"><p className="text-sm text-[#b9d5c9]">Total saved so far</p><p className="mt-2 text-5xl font-extrabold">{money(saved)}</p><p className="mt-4 text-sm text-[#b9d5c9]">Matures {fmt(plan.maturity)} · {daysLeft(plan.maturity)} days remaining</p></div><div className="mt-8 flex items-center justify-between"><h2 className="text-xl font-extrabold">Contribution history</h2><button onClick={onPause} className="text-sm font-bold text-slate-500">{plan.status==='paused'?'Resume':'Pause'} plan</button></div><div className="mt-4 divide-y divide-[#e7eee8] rounded-3xl bg-white px-6 shadow-soft">{plan.contributions.length?plan.contributions.slice().reverse().map((c,i)=><div className="flex items-center justify-between py-5" key={i}><div className="flex items-center gap-3"><span className="grid h-9 w-9 place-items-center rounded-full bg-mint text-brand">✓</span><div><p className="font-bold">Payment confirmed</p><p className="text-sm text-slate-400">{fmt(c.date)}</p></div></div><b>{money(c.amount)}</b></div>):<p className="py-8 text-center text-slate-400">Your first contribution will appear here.</p>}</div><p className="mt-6 text-center text-xs text-slate-400">Remember: transfer money to your own savings account separately, then confirm it here.</p></main>}
+    function Notifications({onBack}){return <main className="mx-auto max-w-2xl px-5 py-10"><button onClick={onBack} className="text-sm font-bold text-slate-500">← Back to dashboard</button><h1 className="mt-7 text-4xl font-extrabold">Notifications</h1><p className="mt-2 text-slate-500">Friendly reminders to keep your momentum.</p><div className="mt-8 space-y-3"><div className="rounded-3xl bg-white p-5 shadow-soft"><div className="flex gap-4"><span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#fff0e7]">◷</span><div><p className="font-bold">Your next payment is in 2 days</p><p className="mt-1 text-sm text-slate-500">Set aside your contribution for New laptop fund. You’ve got this.</p><p className="mt-3 text-xs text-slate-400">Today · Email reminder scheduled</p></div></div></div><div className="rounded-3xl bg-white p-5 shadow-soft"><div className="flex gap-4"><span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-mint">✦</span><div><p className="font-bold">You’re building a great habit</p><p className="mt-1 text-sm text-slate-500">Three contributions logged this month. Keep going!</p><p className="mt-3 text-xs text-slate-400">Yesterday</p></div></div></div></div></main>}
+    ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+  </script>
+  <style>.field{display:block;width:100%;margin-top:.5rem;border:1px solid #dce8df;border-radius:.75rem;padding:.75rem;outline:none;background:white}.field:focus{border-color:#147d68}</style>
 </body>
 </html>
