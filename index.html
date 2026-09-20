@@ -4,267 +4,80 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="The Money Master System by Coach Clinton — a practical Nigerian personal finance ebook for taking control of your money.">
-  <meta name="theme-color" content="#0a0a0a">
+  <meta name="theme-color" content="#090909">
   <title>The Money Master System | Coach Clinton</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
   <style>
-    /* =====================
-       BRAND TOKENS & RESET
-       ===================== */
-    :root { --black:#0a0a0a; --panel:#111; --panel-2:#161616; --gold:#c9a227; --gold-light:#e4c65d; --cream:#f5f0e6; --muted:#b3aea4; --line:rgba(201,162,39,.23); --radius:18px; }
-    * { box-sizing:border-box; margin:0; padding:0; }
-    html { scroll-behavior:smooth; }
-    body { background:var(--black); color:var(--cream); font-family:'DM Sans',Arial,sans-serif; line-height:1.65; }
-    a { color:inherit; text-decoration:none; }
-    img { display:block; max-width:100%; }
-    .container { width:min(1120px,calc(100% - 40px)); margin-inline:auto; }
-    .eyebrow { color:var(--gold-light); font-size:.72rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase; }
-    h1,h2,h3 { color:#fff; line-height:1.12; letter-spacing:-.025em; }
-    h1 { font-size:clamp(2.6rem,7vw,5.5rem); max-width:780px; }
-    h2 { font-size:clamp(2rem,4vw,3.25rem); }
-    h3 { font-size:1.2rem; }
-    p { color:var(--muted); }
-    section { padding:100px 0; }
-    .section-head { max-width:650px; margin-bottom:42px; }
-    .section-head h2 { margin-top:12px; }
-    .section-head p { margin-top:18px; font-size:1.05rem; }
-    .btn { display:inline-flex; align-items:center; justify-content:center; gap:10px; min-height:52px; padding:0 24px; border-radius:999px; border:1px solid transparent; font-weight:700; transition:transform .2s,background .2s,border-color .2s; }
-    .btn:hover { transform:translateY(-2px); }
-    .btn-gold { background:var(--gold); color:#0a0a0a; }
-    .btn-gold:hover { background:var(--gold-light); }
-    .btn-outline { border-color:rgba(245,240,230,.28); color:var(--cream); }
-    .btn-outline:hover { border-color:var(--gold); color:var(--gold-light); }
-    .gold { color:var(--gold-light); }
+    /* ===================== BRAND TOKENS & RESET ===================== */
+    :root{--black:#090909;--ink:#101010;--panel:#141414;--panel2:#191713;--gold:#c9a227;--gold-light:#ecd477;--cream:#f5f0e6;--muted:#aaa59b;--line:rgba(201,162,39,.25);--serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',Arial,sans-serif}
+    *{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{background:var(--black);color:var(--cream);font-family:var(--sans);line-height:1.65;overflow-x:hidden}a{color:inherit;text-decoration:none}img{display:block;max-width:100%}.container{width:min(1120px,calc(100% - 40px));margin-inline:auto}p{color:var(--muted)}h1,h2,h3{color:#fff;line-height:1.12;letter-spacing:-.03em}h1{font:700 clamp(2.9rem,7vw,6rem)/1.02 var(--serif);max-width:800px}h2{font:700 clamp(2.05rem,4.5vw,3.6rem)/1.08 var(--serif)}h3{font-size:1.14rem}.gold{color:var(--gold-light)}.eyebrow{color:var(--gold-light);font-size:.68rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase}.section-head{max-width:670px;margin-bottom:42px}.section-head h2{margin-top:12px}.section-head p:not(.eyebrow){margin-top:18px;font-size:1.03rem}.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 25px;border:1px solid transparent;border-radius:2px;font-weight:700;transition:transform .25s,background .25s,border-color .25s}.btn:hover{transform:translateY(-3px)}.btn-gold{background:var(--gold);color:#090909}.btn-gold:hover{background:var(--gold-light)}.btn-outline{border-color:rgba(245,240,230,.3);color:var(--cream)}.btn-outline:hover{border-color:var(--gold);color:var(--gold-light)}section{padding:112px 0}
 
-    /* =====================
-       HEADER & HERO
-       ===================== */
-    header { position:absolute; inset:0 0 auto; z-index:5; padding:22px 0; }
-    .nav { display:flex; align-items:center; justify-content:space-between; }
-    .logo { font-size:.9rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
-    .logo span { color:var(--gold); }
-    .nav-link { color:var(--muted); font-size:.9rem; }
-    .hero { position:relative; min-height:760px; display:flex; align-items:center; overflow:hidden; padding:150px 0 110px; background:radial-gradient(circle at 76% 40%,rgba(201,162,39,.13),transparent 30%),linear-gradient(115deg,#0a0a0a 50%,#12100a); }
-    .hero:after { content:''; position:absolute; width:520px; height:520px; right:-250px; top:-230px; border:1px solid rgba(201,162,39,.15); border-radius:50%; box-shadow:0 0 0 55px rgba(201,162,39,.025),0 0 0 110px rgba(201,162,39,.025); }
-    .hero-grid { position:relative; z-index:1; display:grid; gap:55px; align-items:center; grid-template-columns:1.2fr .8fr; }
-    .hero h1 { margin:14px 0 20px; }
-    .hero-copy { max-width:640px; font-size:1.15rem; }
-    .hero-actions { display:flex; flex-wrap:wrap; gap:12px; margin:32px 0 25px; }
-    .price { display:flex; align-items:baseline; gap:12px; font-size:2rem; font-weight:700; color:#fff; }
-    .price small { color:var(--muted); font-size:.9rem; font-weight:400; }
-    .book-wrap { display:flex; justify-content:center; }
-    .book { width:min(310px,75vw); aspect-ratio:3/4; object-fit:cover; border:1px solid var(--gold); border-radius:5px 14px 14px 5px; box-shadow:25px 28px 60px rgba(0,0,0,.65),8px 0 0 #7d6216; }
-    .trust-row { display:flex; flex-wrap:wrap; gap:14px; margin-top:20px; }
-    .trust-row span { color:var(--muted); font-size:.76rem; }
-    .trust-row span::before { content:'✓'; color:var(--gold-light); font-weight:700; margin-right:6px; }
+    /* ===================== LUXURY HEADER & HERO ===================== */
+    header{position:absolute;inset:0 0 auto;z-index:5;padding:24px 0}.nav{display:flex;justify-content:space-between;align-items:center}.logo{font-size:.8rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase}.logo span{color:var(--gold)}.nav-link{color:var(--muted);font-size:.82rem;letter-spacing:.04em}.hero{position:relative;display:flex;align-items:center;min-height:790px;padding:155px 0 115px;overflow:hidden;background:radial-gradient(circle at 80% 40%,rgba(201,162,39,.15),transparent 29%),linear-gradient(110deg,#090909 0%,#0c0c0c 54%,#171208 100%)}.hero:before{content:'';position:absolute;inset:22px;border:1px solid rgba(201,162,39,.09);pointer-events:none}.hero:after{content:'';position:absolute;width:560px;height:560px;right:-300px;top:-260px;border:1px solid rgba(201,162,39,.17);border-radius:50%;box-shadow:0 0 0 58px rgba(201,162,39,.025),0 0 0 116px rgba(201,162,39,.025)}.hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.2fr .8fr;gap:65px;align-items:center}.hero h1{margin:16px 0 23px}.hero-copy{max-width:620px;font-size:1.12rem}.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin:34px 0 25px}.price{display:flex;align-items:baseline;gap:12px;color:#fff;font-size:2rem;font-weight:700}.price small{color:var(--muted);font-size:.82rem;font-weight:400}.trust-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:20px}.trust-row span{color:var(--muted);font-size:.74rem}.trust-row span:before{content:'✓';color:var(--gold-light);font-weight:700;margin-right:6px}.book-wrap{display:flex;justify-content:center;perspective:1000px}.book{width:min(315px,75vw);aspect-ratio:3/4;object-fit:cover;border:1px solid var(--gold);border-radius:3px 12px 12px 3px;box-shadow:26px 30px 60px #000,8px 0 0 #755d18;transform:rotateY(-8deg) rotateZ(1deg);transition:transform .5s}.book:hover{transform:rotateY(-2deg) rotateZ(0)}
 
-    /* =====================
-       CONTENT SECTIONS
-       ===================== */
-    .problem { background:#0d0d0d; }
-    .pain-grid,.feature-grid,.audience-grid,.trust-grid { display:grid; gap:14px; grid-template-columns:repeat(4,1fr); }
-    .card { background:var(--panel); border:1px solid rgba(255,255,255,.08); border-radius:var(--radius); padding:28px; }
-    .pain-card { min-height:190px; }
-    .number { color:var(--gold); font-size:1.8rem; font-family:'Playfair Display',serif; }
-    .pain-card h3 { margin:18px 0 9px; }
-    .story { background:linear-gradient(100deg,#151208,#0d0d0d); }
-    .story-inner { display:grid; grid-template-columns:.8fr 1.2fr; gap:70px; align-items:center; }
-    .quote { border-left:2px solid var(--gold); padding-left:28px; font-size:clamp(1.4rem,2.6vw,2rem); line-height:1.45; color:#fff; }
-    .quote em { color:var(--gold-light); font-style:normal; }
-    .examples { background:#0d0d0d; }
-    .example-grid { display:grid; gap:16px; grid-template-columns:repeat(3,1fr); }
-    .example-card { position:relative; overflow:hidden; }
-    .example-card:before { content:''; position:absolute; inset:0 auto 0 0; width:3px; background:var(--gold); }
-    .example-card h3 { margin:14px 0 8px; }
-    .example-card strong { color:#fff; }
-    .label { display:inline-block; border:1px solid var(--line); border-radius:999px; color:var(--gold-light); font-size:.68rem; font-weight:700; letter-spacing:.08em; padding:5px 9px; text-transform:uppercase; }
-    .note { margin-top:20px; font-size:.82rem; font-style:italic; }
-    .features { background:#0a0a0a; }
-    .feature-grid { grid-template-columns:repeat(3,1fr); }
-    .feature-card { display:flex; gap:14px; padding:21px; }
-    .check { flex:0 0 24px; height:24px; display:grid; place-items:center; border-radius:50%; background:rgba(201,162,39,.15); color:var(--gold-light); }
-    .feature-card p { font-size:.91rem; }
-    .audience-grid { grid-template-columns:repeat(5,1fr); }
-    .audience-card { text-align:center; padding:23px 14px; }
-    .audience-icon { display:block; color:var(--gold-light); font-size:1.6rem; margin-bottom:12px; }
-    .about { background:#0d0d0d; }
-    .about-inner { display:grid; grid-template-columns:230px 1fr; gap:55px; align-items:center; max-width:850px; }
-    .avatar { width:190px; height:190px; border-radius:50%; border:1px solid var(--gold); background:var(--panel-2); display:grid; place-items:center; color:var(--gold-light); font-family:'Playfair Display',serif; font-size:4rem; }
-    .about h2 { margin:10px 0 16px; }
-    .trust-grid { grid-template-columns:repeat(3,1fr); }
-    .trust-card { text-align:center; }
-    .trust-card .trust-icon { color:var(--gold-light); font-size:1.6rem; }
-    .trust-card h3 { margin:13px 0 5px; }
+    /* ===================== CONTENT ===================== */
+    .problem,.examples{background:#0d0d0d}.pain-grid,.feature-grid,.audience-grid,.trust-grid{display:grid;gap:15px;grid-template-columns:repeat(4,1fr)}.card{background:linear-gradient(145deg,#171717,#101010);border:1px solid rgba(255,255,255,.09);border-radius:2px;padding:29px;transition:border-color .3s,transform .3s}.card:hover{border-color:var(--line);transform:translateY(-4px)}.pain-card{min-height:190px}.number{color:var(--gold);font:1.8rem var(--serif)}.pain-card h3{margin:17px 0 9px}.story{background:linear-gradient(105deg,#171307,#0c0c0c)}.story-inner{display:grid;grid-template-columns:.8fr 1.2fr;gap:75px;align-items:center}.quote{border-left:2px solid var(--gold);padding-left:28px;color:#fff;font:1.45rem/1.5 var(--serif)}.quote em{color:var(--gold-light);font-style:normal}.quote small{font:700 .72rem var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--gold-light)}.example-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.example-card{position:relative;overflow:hidden}.example-card:before{content:'';position:absolute;inset:0 auto 0 0;width:3px;background:var(--gold)}.example-card h3{margin:15px 0 8px}.example-card strong{color:#fff}.label{display:inline-block;border:1px solid var(--line);border-radius:999px;color:var(--gold-light);font-size:.64rem;font-weight:700;letter-spacing:.1em;padding:5px 10px;text-transform:uppercase}.note{margin-top:20px;font-size:.8rem;font-style:italic}.features{background:#090909}.feature-grid{grid-template-columns:repeat(3,1fr)}.feature-card{display:flex;gap:14px;padding:21px}.feature-card p{font-size:.9rem}.check{flex:0 0 24px;height:24px;display:grid;place-items:center;border-radius:50%;background:rgba(201,162,39,.14);color:var(--gold-light)}.audience-grid{grid-template-columns:repeat(5,1fr)}.audience-card{text-align:center;padding:24px 14px}.audience-icon{display:block;color:var(--gold-light);font-size:1.5rem;margin-bottom:12px}.about{background:#0d0d0d}.about-inner{display:grid;grid-template-columns:230px 1fr;gap:55px;align-items:center;max-width:850px}.avatar{width:190px;height:190px;display:grid;place-items:center;border:1px solid var(--gold);border-radius:50%;background:var(--panel2);color:var(--gold-light);font:4rem var(--serif)}.about h2{margin:10px 0 16px}.trust-grid{grid-template-columns:repeat(3,1fr)}.trust-card{text-align:center}.trust-icon{color:var(--gold-light);font-size:1.6rem}.trust-card h3{margin:13px 0 5px}
 
-    /* =====================
-       FAQ, CTA & FOOTER
-       ===================== */
-    .faq-wrap { max-width:800px; margin:auto; }
-    details { border-bottom:1px solid rgba(255,255,255,.14); }
-    summary { cursor:pointer; list-style:none; display:flex; justify-content:space-between; gap:18px; padding:23px 0; color:#fff; font-weight:600; }
-    summary::-webkit-details-marker { display:none; }
-    summary:after { content:'+'; color:var(--gold-light); font-size:1.4rem; }
-    details[open] summary:after { content:'−'; }
-    details p { padding:0 45px 22px 0; }
-    .final { text-align:center; background:linear-gradient(135deg,#1a1508,#0b0b0b); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
-    .final h2 { max-width:700px; margin:12px auto 14px; }
-    .final p { margin-bottom:25px; }
-    .final .price { justify-content:center; margin-bottom:22px; }
-    .final-actions { display:flex; justify-content:center; flex-wrap:wrap; gap:12px; }
-    footer { padding:36px 0 85px; text-align:center; }
-    footer p { font-size:.78rem; }
-    .sticky-cta { display:none; }
+    /* ===================== POLISHED FAQ & CTA ===================== */
+    .faq-wrap{max-width:820px;margin:auto}.faq-item{border-bottom:1px solid rgba(255,255,255,.14)}.faq-question{width:100%;display:flex;justify-content:space-between;gap:18px;align-items:center;padding:24px 0;border:0;background:none;color:#fff;text-align:left;font:600 1rem var(--sans);cursor:pointer}.faq-question:focus-visible{outline:1px solid var(--gold);outline-offset:7px}.faq-icon{position:relative;flex:0 0 20px;width:20px;height:20px;color:var(--gold-light)}.faq-icon:before,.faq-icon:after{content:'';position:absolute;top:9px;left:2px;width:16px;height:1px;background:currentColor;transition:transform .3s}.faq-icon:after{transform:rotate(90deg)}.faq-item.is-open .faq-icon:after{transform:rotate(0)}.faq-answer{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s ease}.faq-answer-inner{overflow:hidden}.faq-answer p{padding:0 50px 23px 0}.faq-item.is-open .faq-answer{grid-template-rows:1fr}.final{text-align:center;background:linear-gradient(135deg,#1a1508,#0b0b0b);border-block:1px solid var(--line)}.final h2{max-width:700px;margin:12px auto 14px}.final p{margin-bottom:25px}.final .price{justify-content:center;margin-bottom:22px}.final-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:12px}footer{padding:38px 0 85px;text-align:center}footer p{font-size:.77rem}.sticky-cta{display:none}
 
-    @media (max-width:850px) {
-      section { padding:75px 0; }
-      .hero { min-height:auto; padding-top:125px; }
-      .hero-grid,.story-inner { grid-template-columns:1fr; gap:42px; }
-      .hero-grid { text-align:center; }
-      .hero-copy { margin-inline:auto; }
-      .hero-actions,.trust-row { justify-content:center; }
-      .pain-grid,.feature-grid { grid-template-columns:repeat(2,1fr); }
-      .audience-grid { grid-template-columns:repeat(3,1fr); }
-    }
-    @media (max-width:560px) {
-      .container { width:min(100% - 32px,1120px); }
-      .nav-link { display:none; }
-      .hero { padding-bottom:80px; }
-      .hero h1 { font-size:2.75rem; }
-      .hero-actions,.final-actions { flex-direction:column; }
-      .btn { width:100%; }
-      .book { width:230px; }
-      .pain-grid,.feature-grid,.example-grid,.trust-grid,.audience-grid { grid-template-columns:1fr; }
-      .pain-card { min-height:auto; }
-      .story-inner { gap:25px; }
-      .about-inner { grid-template-columns:1fr; text-align:center; gap:25px; }
-      .avatar { margin:auto; }
-      .quote { padding-left:20px; }
-      .sticky-cta { display:flex; position:fixed; z-index:20; bottom:14px; left:16px; right:16px; box-shadow:0 8px 30px rgba(0,0,0,.6); }
-      footer { padding-bottom:95px; }
-    }
+    /* ===================== SCROLL REVEAL ===================== */
+    .reveal{opacity:0;transform:translateY(24px);transition:opacity .75s ease,transform .75s ease}.reveal.is-visible{opacity:1;transform:none}.reveal-delay-1{transition-delay:.1s}.reveal-delay-2{transition-delay:.2s}.reveal-delay-3{transition-delay:.3s}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}.book,.card,.btn{transition:none}}
+
+    @media(max-width:850px){section{padding:80px 0}.hero{min-height:auto;padding-top:130px}.hero-grid,.story-inner{grid-template-columns:1fr;gap:45px}.hero-grid{text-align:center}.hero-copy{margin-inline:auto}.hero-actions,.trust-row{justify-content:center}.pain-grid,.feature-grid{grid-template-columns:repeat(2,1fr)}.audience-grid{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:560px){.container{width:min(100% - 32px,1120px)}.hero:before{inset:12px}.nav-link{display:none}.hero{padding-bottom:82px}.hero h1{font-size:2.8rem}.hero-actions,.final-actions{flex-direction:column}.btn{width:100%}.book{width:230px}.pain-grid,.feature-grid,.example-grid,.trust-grid,.audience-grid{grid-template-columns:1fr}.pain-card{min-height:auto}.about-inner{grid-template-columns:1fr;text-align:center;gap:25px}.avatar{margin:auto}.quote{padding-left:20px;font-size:1.25rem}.faq-question{padding:20px 0;font-size:.94rem}.faq-answer p{padding-right:15px}.sticky-cta{display:flex;position:fixed;z-index:20;bottom:14px;left:16px;right:16px;box-shadow:0 8px 30px #000}footer{padding-bottom:95px}}
   </style>
 </head>
 <body>
   <!-- ===================== EDITABLE: HEADER ===================== -->
-  <header>
-    <div class="container nav">
-      <a class="logo" href="#top">Money <span>Master</span></a>
-      <a class="nav-link" href="#inside">See what's inside ↓</a>
-    </div>
-  </header>
-
+  <header><div class="container nav"><a class="logo" href="#top">Money <span>Master</span></a><a class="nav-link" href="#inside">See what's inside ↓</a></div></header>
   <main id="top">
     <!-- ===================== EDITABLE: HERO ===================== -->
-    <section class="hero">
-      <div class="container hero-grid">
-        <div>
-          <p class="eyebrow">A practical guide for everyday Nigerians</p>
-          <h1>The Money Master <span class="gold">System</span></h1>
-          <p class="hero-copy">A Complete Blueprint for Taking Control of Your Finances — without jargon, shame, or guesswork.</p>
-          <div class="hero-actions">
-            <a class="btn btn-gold" href="https://selar.com/5r5u5y1582" target="_blank" rel="noopener">Get Instant Access <span>→</span></a>
-            <a class="btn btn-outline" href="https://wa.me/2349119482199" target="_blank" rel="noopener">Chat on WhatsApp</a>
-          </div>
-          <div class="price">₦30,000 <small>one-time payment · PDF ebook</small></div>
-          <div class="trust-row" aria-label="Purchase benefits"><span>Secure payment via Selar</span><span>Instant email delivery</span><span>Digital access</span></div>
-        </div>
-        <div class="book-wrap">
-          <!-- Replace this placeholder src with the final book cover image. -->
-          <img class="book" src="https://placehold.co/620x830/111111/C9A227?text=THE%20MONEY%20MASTER%20SYSTEM" alt="Placeholder cover for The Money Master System ebook">
-        </div>
-      </div>
-    </section>
+    <section class="hero"><div class="container hero-grid"><div class="reveal"><p class="eyebrow">A practical guide for everyday Nigerians</p><h1>The Money Master <span class="gold">System</span></h1><p class="hero-copy">A Complete Blueprint for Taking Control of Your Finances — without jargon, shame, or guesswork.</p><div class="hero-actions"><a class="btn btn-gold" href="https://selar.com/5r5u5y1582" target="_blank" rel="noopener">Get Instant Access <span>→</span></a><a class="btn btn-outline" href="https://wa.me/2349119482199" target="_blank" rel="noopener">Chat on WhatsApp</a></div><div class="price">₦30,000 <small>one-time payment · PDF ebook</small></div><div class="trust-row" aria-label="Purchase benefits"><span>Secure payment via Selar</span><span>Instant email delivery</span><span>Digital access</span></div></div><div class="book-wrap reveal reveal-delay-2"><!-- Add the final cover at assets/money-master-cover.jpg when available. The fallback keeps the page presentable until then. --><img class="book" src="assets/money-master-cover.jpg" onerror="this.onerror=null;this.src='https://placehold.co/620x830/111111/C9A227?text=THE%20MONEY%20MASTER%20SYSTEM'" alt="The Money Master System ebook cover"></div></div></section>
 
     <!-- ===================== EDITABLE: THE PROBLEM ===================== -->
-    <section class="problem">
-      <div class="container">
-        <div class="section-head"><p class="eyebrow">The problem</p><h2>Your money should work harder than you do.</h2><p>Being hardworking is not always enough when nobody teaches you what to do with the money that comes in.</p></div>
-        <div class="pain-grid">
-          <article class="card pain-card"><span class="number">01</span><h3>Salary disappears by week three</h3><p>You earn, pay bills, help family — then wonder where the rest went.</p></article>
-          <article class="card pain-card"><span class="number">02</span><h3>No emergency cushion</h3><p>One unexpected expense can throw the entire month into panic.</p></article>
-          <article class="card pain-card"><span class="number">03</span><h3>Debt keeps multiplying</h3><p>Loan-app repayments make it feel impossible to get your head above water.</p></article>
-          <article class="card pain-card"><span class="number">04</span><h3>Saving feels confusing</h3><p>You want to save or invest, but you do not know where to begin.</p></article>
-        </div>
-      </div>
-    </section>
+    <section class="problem"><div class="container"><div class="section-head reveal"><p class="eyebrow">The problem</p><h2>Your money should work harder than you do.</h2><p>Being hardworking is not always enough when nobody teaches you what to do with the money that comes in.</p></div><div class="pain-grid"><article class="card pain-card reveal"><span class="number">01</span><h3>Salary disappears by week three</h3><p>You earn, pay bills, help family — then wonder where the rest went.</p></article><article class="card pain-card reveal reveal-delay-1"><span class="number">02</span><h3>No emergency cushion</h3><p>One unexpected expense can throw the entire month into panic.</p></article><article class="card pain-card reveal reveal-delay-2"><span class="number">03</span><h3>Debt keeps multiplying</h3><p>Loan-app repayments make it feel impossible to get your head above water.</p></article><article class="card pain-card reveal reveal-delay-3"><span class="number">04</span><h3>Saving feels confusing</h3><p>You want to save or invest, but you do not know where to begin.</p></article></div></div></section>
 
     <!-- ===================== EDITABLE: AUTHOR STORY ===================== -->
-    <section class="story">
-      <div class="container story-inner">
-        <div><p class="eyebrow">Why I wrote this book</p><h2>A system beats willpower.</h2></div>
-        <p class="quote">“I built <em>The Money Master System</em> because I got tired of watching hardworking Nigerians struggle with money for no reason other than never having a real system. It's not about how much you earn — it's about having a plan for it. This book is that plan.”<br><br><small>— Coach Clinton</small></p>
-      </div>
-    </section>
+    <section class="story"><div class="container story-inner"><div class="reveal"><p class="eyebrow">Why I wrote this book</p><h2>A system beats willpower.</h2></div><p class="quote reveal reveal-delay-1">“I built <em>The Money Master System</em> because I got tired of watching hardworking Nigerians struggle with money for no reason other than never having a real system. It's not about how much you earn — it's about having a plan for it. This book is that plan.”<br><br><small>— Coach Clinton</small></p></div></section>
 
     <!-- ===================== EDITABLE: ILLUSTRATIVE EXAMPLES ===================== -->
-    <section class="examples">
-      <div class="container">
-        <div class="section-head"><p class="eyebrow">The impossible made possible</p><h2>Small, consistent moves. A different financial life.</h2><p>These are illustrative worked examples from inside the book — the kind of results this system is designed to produce, not verified customer reviews.</p></div>
-        <div class="example-grid">
-          <article class="card example-card"><span class="label">Worked example</span><h3>Ibrahim</h3><p>Cleared <strong>₦280,000 across four loan apps in 8 months</strong> using the debt avalanche method taught in Chapter 10.</p></article>
-          <article class="card example-card"><span class="label">Worked example</span><h3>Blessing</h3><p>Started with ₦180,000 debt and no emergency fund. Within 90 days, cleared ₦95,000, built a ₦60,000 emergency fund, and grew income by ₦25,000/month.</p></article>
-          <article class="card example-card"><span class="label">Worked example</span><h3>Tunde</h3><p>A keke rider who saved <strong>₦182,500 in one year</strong> by setting aside just ₦500 each day.</p></article>
-        </div>
-        <!-- Placeholder testimonial carousel structure: replace example cards with real reviews when available. -->
-        <p class="note">Real buyer testimonials will be added here as reviews come in.</p>
-      </div>
-    </section>
+    <section class="examples"><div class="container"><div class="section-head reveal"><p class="eyebrow">The impossible made possible</p><h2>Small, consistent moves. A different financial life.</h2><p>These are illustrative worked examples from inside the book — the kind of results this system is designed to produce, not verified customer reviews.</p></div><div class="example-grid"><article class="card example-card reveal"><span class="label">Worked example</span><h3>Ibrahim</h3><p>Cleared <strong>₦280,000 across four loan apps in 8 months</strong> using the debt avalanche method taught in Chapter 10.</p></article><article class="card example-card reveal reveal-delay-1"><span class="label">Worked example</span><h3>Blessing</h3><p>Started with ₦180,000 debt and no emergency fund. Within 90 days, cleared ₦95,000, built a ₦60,000 emergency fund, and grew income by ₦25,000/month.</p></article><article class="card example-card reveal reveal-delay-2"><span class="label">Worked example</span><h3>Tunde</h3><p>A keke rider who saved <strong>₦182,500 in one year</strong> by setting aside just ₦500 each day.</p></article></div><p class="note">Real buyer testimonials will be added here as reviews come in.</p></div></section>
 
     <!-- ===================== EDITABLE: WHAT YOU GET ===================== -->
-    <section class="features" id="inside">
-      <div class="container">
-        <div class="section-head"><p class="eyebrow">What you get</p><h2>Everything you need to build your money system.</h2><p>Open the PDF, start where you are, and follow a clear path from confusion to control.</p></div>
-        <div class="feature-grid">
-          <div class="card feature-card"><span class="check">✓</span><p><strong>22 chapters</strong> covering the fundamentals of personal finance.</p></div>
-          <div class="card feature-card"><span class="check">✓</span><p>Income, expense, budget, savings, debt and net-worth trackers.</p></div>
-          <div class="card feature-card"><span class="check">✓</span><p>The <strong>30-Day Money Challenge</strong> to start taking action.</p></div>
-          <div class="card feature-card"><span class="check">✓</span><p>The <strong>90-Day Transformation Plan</strong> for lasting momentum.</p></div>
-          <div class="card feature-card"><span class="check">✓</span><p>Weekly Audit + Monthly Review system.</p></div>
-          <div class="card feature-card"><span class="check">✓</span><p>Bonus: <strong>50 Ways to Save More Money</strong>.</p></div>
-          <div class="card feature-card"><span class="check">✓</span><p>Bonus: <strong>100 Money Habits of Financially Successful People</strong>.</p></div>
-          <div class="card feature-card"><span class="check">✓</span><p>Quick-Start Guides for students, salary earners, freelancers and entrepreneurs.</p></div>
-          <div class="card feature-card"><span class="check">✓</span><p><strong>10 printable worksheets</strong> to make the system practical.</p></div>
-        </div>
-      </div>
-    </section>
+    <section class="features" id="inside"><div class="container"><div class="section-head reveal"><p class="eyebrow">What you get</p><h2>Everything you need to build your money system.</h2><p>Open the PDF, start where you are, and follow a clear path from confusion to control.</p></div><div class="feature-grid"><div class="card feature-card reveal"><span class="check">✓</span><p><strong>22 chapters</strong> covering the fundamentals of personal finance.</p></div><div class="card feature-card reveal reveal-delay-1"><span class="check">✓</span><p>Income, expense, budget, savings, debt and net-worth trackers.</p></div><div class="card feature-card reveal reveal-delay-2"><span class="check">✓</span><p>The <strong>30-Day Money Challenge</strong> to start taking action.</p></div><div class="card feature-card reveal"><span class="check">✓</span><p>The <strong>90-Day Transformation Plan</strong> for lasting momentum.</p></div><div class="card feature-card reveal reveal-delay-1"><span class="check">✓</span><p>Weekly Audit + Monthly Review system.</p></div><div class="card feature-card reveal reveal-delay-2"><span class="check">✓</span><p>Bonus: <strong>50 Ways to Save More Money</strong>.</p></div><div class="card feature-card reveal"><span class="check">✓</span><p>Bonus: <strong>100 Money Habits of Financially Successful People</strong>.</p></div><div class="card feature-card reveal reveal-delay-1"><span class="check">✓</span><p>Quick-Start Guides for students, salary earners, freelancers and entrepreneurs.</p></div><div class="card feature-card reveal reveal-delay-2"><span class="check">✓</span><p><strong>10 printable worksheets</strong> to make the system practical.</p></div></div></div></section>
 
     <!-- ===================== EDITABLE: WHO IT IS FOR ===================== -->
-    <section>
-      <div class="container"><div class="section-head"><p class="eyebrow">Who this is for</p><h2>If you earn or spend money, this is for you.</h2></div>
-        <div class="audience-grid">
-          <div class="card audience-card"><span class="audience-icon">₦</span><p>Salary earners</p></div><div class="card audience-card"><span class="audience-icon">↗</span><p>Freelancers & entrepreneurs</p></div><div class="card audience-card"><span class="audience-icon">✦</span><p>Students</p></div><div class="card audience-card"><span class="audience-icon">▣</span><p>Market women & artisans</p></div><div class="card audience-card"><span class="audience-icon">?</span><p>Anyone asking “where did my money go?”</p></div>
-        </div>
-      </div>
-    </section>
+    <section><div class="container"><div class="section-head reveal"><p class="eyebrow">Who this is for</p><h2>If you earn or spend money, this is for you.</h2></div><div class="audience-grid"><div class="card audience-card reveal"><span class="audience-icon">₦</span><p>Salary earners</p></div><div class="card audience-card reveal reveal-delay-1"><span class="audience-icon">↗</span><p>Freelancers & entrepreneurs</p></div><div class="card audience-card reveal reveal-delay-2"><span class="audience-icon">✦</span><p>Students</p></div><div class="card audience-card reveal reveal-delay-3"><span class="audience-icon">▣</span><p>Market women & artisans</p></div><div class="card audience-card reveal"><span class="audience-icon">?</span><p>Anyone asking “where did my money go?”</p></div></div></div></section>
 
     <!-- ===================== EDITABLE: ABOUT AUTHOR ===================== -->
-    <section class="about"><div class="container about-inner">
-      <!-- Replace the initials with an <img> when a photo is available. -->
-      <div class="avatar" role="img" aria-label="Placeholder portrait for Coach Clinton">CC</div>
-      <div><p class="eyebrow">About the author</p><h2>Meet Coach Clinton.</h2><p>Coach Clinton is the creator of The Money Master System, built to give everyday Nigerians a practical, judgment-free path to understanding and controlling their money — no jargon, no guesswork, just a system that works.</p></div>
-    </div></section>
+    <section class="about"><div class="container about-inner"><div class="avatar reveal" role="img" aria-label="Placeholder portrait for Coach Clinton">CC</div><div class="reveal reveal-delay-1"><p class="eyebrow">About the author</p><h2>Meet Coach Clinton.</h2><p>Coach Clinton is the creator of The Money Master System, built to give everyday Nigerians a practical, judgment-free path to understanding and controlling their money — no jargon, no guesswork, just a system that works.</p></div></div></section>
 
     <!-- ===================== EDITABLE: TRUST & GUARANTEE ===================== -->
-    <section><div class="container"><div class="section-head"><p class="eyebrow">Buy with confidence</p><h2>Simple, secure, immediate.</h2></div><div class="trust-grid">
-      <div class="card trust-card"><div class="trust-icon">▣</div><h3>Secure payment via Selar</h3><p>Use Selar's trusted checkout to complete your purchase.</p></div><div class="card trust-card"><div class="trust-icon">✉</div><h3>Instant email delivery</h3><p>Your PDF is delivered to your email after payment.</p></div><div class="card trust-card"><div class="trust-icon">✓</div><h3>Instant access</h3><p>As a digital product, all sales are final.</p></div>
-    </div></div></section>
+    <section><div class="container"><div class="section-head reveal"><p class="eyebrow">Buy with confidence</p><h2>Simple, secure, immediate.</h2></div><div class="trust-grid"><div class="card trust-card reveal"><div class="trust-icon">▣</div><h3>Secure payment via Selar</h3><p>Use Selar's trusted checkout to complete your purchase.</p></div><div class="card trust-card reveal reveal-delay-1"><div class="trust-icon">✉</div><h3>Instant email delivery</h3><p>Your PDF is delivered to your email after payment.</p></div><div class="card trust-card reveal reveal-delay-2"><div class="trust-icon">✓</div><h3>Instant access</h3><p>As a digital product, all sales are final.</p></div></div></div></section>
 
     <!-- ===================== EDITABLE: FAQ ===================== -->
-    <section class="problem"><div class="container faq-wrap"><div class="section-head"><p class="eyebrow">Frequently asked questions</p><h2>Before you begin.</h2></div>
-      <details><summary>I don't earn much — is this for me?</summary><p>Yes. The system is designed for real-life Nigerian incomes, not just high earners. It helps you create clarity and a plan with what you have today.</p></details>
-      <details><summary>I've failed at budgeting before, why would this work?</summary><p>This is more than a spreadsheet. You will learn a simple weekly and monthly review rhythm that helps you adjust without shame when life changes.</p></details>
-      <details><summary>Is this practical or just theory?</summary><p>It is practical by design: trackers, printable worksheets, a 30-Day Money Challenge and a 90-Day Transformation Plan help you put every lesson into action.</p></details>
-      <details><summary>How do I receive the ebook after paying?</summary><p>Complete payment through Selar and the PDF will be sent to the email address you use at checkout. If you need help, chat with us on WhatsApp.</p></details>
-    </div></section>
+    <section class="problem"><div class="container faq-wrap"><div class="section-head reveal"><p class="eyebrow">Frequently asked questions</p><h2>Before you begin.</h2></div><div class="faq-item reveal"><button class="faq-question" type="button" aria-expanded="false">I don't earn much — is this for me?<span class="faq-icon" aria-hidden="true"></span></button><div class="faq-answer"><div class="faq-answer-inner"><p>Yes. The system is designed for real-life Nigerian incomes, not just high earners. It helps you create clarity and a plan with what you have today.</p></div></div></div><div class="faq-item reveal"><button class="faq-question" type="button" aria-expanded="false">I've failed at budgeting before, why would this work?<span class="faq-icon" aria-hidden="true"></span></button><div class="faq-answer"><div class="faq-answer-inner"><p>This is more than a spreadsheet. You will learn a simple weekly and monthly review rhythm that helps you adjust without shame when life changes.</p></div></div></div><div class="faq-item reveal"><button class="faq-question" type="button" aria-expanded="false">Is this practical or just theory?<span class="faq-icon" aria-hidden="true"></span></button><div class="faq-answer"><div class="faq-answer-inner"><p>It is practical by design: trackers, printable worksheets, a 30-Day Money Challenge and a 90-Day Transformation Plan help you put every lesson into action.</p></div></div></div><div class="faq-item reveal"><button class="faq-question" type="button" aria-expanded="false">How do I receive the ebook after paying?<span class="faq-icon" aria-hidden="true"></span></button><div class="faq-answer"><div class="faq-answer-inner"><p>Complete payment through Selar and the PDF will be sent to the email address you use at checkout. If you need help, chat with us on WhatsApp.</p></div></div></div></div></section>
 
     <!-- ===================== EDITABLE: FINAL CTA ===================== -->
-    <section class="final"><div class="container"><p class="eyebrow">Your next chapter starts here</p><h2>You do not need more motivation. You need a money system.</h2><p>Get the blueprint and start building calm, confident control over your finances.</p><div class="price">₦30,000</div><div class="final-actions"><a class="btn btn-gold" href="https://selar.com/5r5u5y1582" target="_blank" rel="noopener">Get Instant Access →</a><a class="btn btn-outline" href="https://wa.me/2349119482199" target="_blank" rel="noopener">Chat on WhatsApp</a></div></div></section>
+    <section class="final"><div class="container reveal"><p class="eyebrow">Your next chapter starts here</p><h2>You do not need more motivation. You need a money system.</h2><p>Get the blueprint and start building calm, confident control over your finances.</p><div class="price">₦30,000</div><div class="final-actions"><a class="btn btn-gold" href="https://selar.com/5r5u5y1582" target="_blank" rel="noopener">Get Instant Access →</a><a class="btn btn-outline" href="https://wa.me/2349119482199" target="_blank" rel="noopener">Chat on WhatsApp</a></div></div></section>
   </main>
-
   <!-- ===================== EDITABLE: FOOTER ===================== -->
-  <footer><div class="container"><p><strong>The Money Master System</strong> — by Coach Clinton, Wealth Work Academy</p><p>© 2026 Wealth Work Academy. Financial education for everyday Nigerians.</p></div></footer>
-  <a class="btn btn-gold sticky-cta" href="https://selar.com/5r5u5y1582" target="_blank" rel="noopener">Get Instant Access · ₦30,000</a>
+  <footer><div class="container"><p><strong>The Money Master System</strong> — by Coach Clinton, Wealth Work Academy</p><p>© 2026 Wealth Work Academy. Financial education for everyday Nigerians.</p></div></footer><a class="btn btn-gold sticky-cta" href="https://selar.com/5r5u5y1582" target="_blank" rel="noopener">Get Instant Access · ₦30,000</a>
+  <script>
+    // Subtle scroll reveal; respects reduced-motion preferences through CSS.
+    const revealObserver = new IntersectionObserver((entries, observer) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); observer.unobserve(entry.target); } }); }, { threshold:.12, rootMargin:'0px 0px -35px' });
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    // Mobile-friendly one-open-at-a-time FAQ accordion.
+    document.querySelectorAll('.faq-question').forEach(button => button.addEventListener('click', () => {
+      const item = button.closest('.faq-item');
+      const willOpen = !item.classList.contains('is-open');
+      document.querySelectorAll('.faq-item.is-open').forEach(openItem => { openItem.classList.remove('is-open'); openItem.querySelector('.faq-question').setAttribute('aria-expanded','false'); });
+      if (willOpen) { item.classList.add('is-open'); button.setAttribute('aria-expanded','true'); }
+    }));
+  </script>
 </body>
 </html>
