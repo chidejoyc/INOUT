@@ -1,54 +1,270 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="INOUT — a calmer way to stay on track with your savings goals." />
-  <title>INOUT — Save with intention</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','ui-sans-serif','system-ui']},colors:{ink:'#193b3a',mint:'#dff5ea',brand:'#147d68',sky:'#e7f4f7',cream:'#fbfaf5'}}}};</script>
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <style>body{background:#fbfaf5;color:#193b3a}*{box-sizing:border-box}.shadow-soft{box-shadow:0 18px 45px rgba(25,59,58,.08)}.progress{transition:width .5s ease}.hide-scroll::-webkit-scrollbar{display:none}</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Money Master System by Coach Clinton — a practical Nigerian personal finance ebook for taking control of your money.">
+  <meta name="theme-color" content="#0a0a0a">
+  <title>The Money Master System | Coach Clinton</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    /* =====================
+       BRAND TOKENS & RESET
+       ===================== */
+    :root { --black:#0a0a0a; --panel:#111; --panel-2:#161616; --gold:#c9a227; --gold-light:#e4c65d; --cream:#f5f0e6; --muted:#b3aea4; --line:rgba(201,162,39,.23); --radius:18px; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; }
+    body { background:var(--black); color:var(--cream); font-family:'DM Sans',Arial,sans-serif; line-height:1.65; }
+    a { color:inherit; text-decoration:none; }
+    img { display:block; max-width:100%; }
+    .container { width:min(1120px,calc(100% - 40px)); margin-inline:auto; }
+    .eyebrow { color:var(--gold-light); font-size:.72rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase; }
+    h1,h2,h3 { color:#fff; line-height:1.12; letter-spacing:-.025em; }
+    h1 { font-size:clamp(2.6rem,7vw,5.5rem); max-width:780px; }
+    h2 { font-size:clamp(2rem,4vw,3.25rem); }
+    h3 { font-size:1.2rem; }
+    p { color:var(--muted); }
+    section { padding:100px 0; }
+    .section-head { max-width:650px; margin-bottom:42px; }
+    .section-head h2 { margin-top:12px; }
+    .section-head p { margin-top:18px; font-size:1.05rem; }
+    .btn { display:inline-flex; align-items:center; justify-content:center; gap:10px; min-height:52px; padding:0 24px; border-radius:999px; border:1px solid transparent; font-weight:700; transition:transform .2s,background .2s,border-color .2s; }
+    .btn:hover { transform:translateY(-2px); }
+    .btn-gold { background:var(--gold); color:#0a0a0a; }
+    .btn-gold:hover { background:var(--gold-light); }
+    .btn-outline { border-color:rgba(245,240,230,.28); color:var(--cream); }
+    .btn-outline:hover { border-color:var(--gold); color:var(--gold-light); }
+    .gold { color:var(--gold-light); }
+
+    /* =====================
+       HEADER & HERO
+       ===================== */
+    header { position:absolute; inset:0 0 auto; z-index:5; padding:22px 0; }
+    .nav { display:flex; align-items:center; justify-content:space-between; }
+    .logo { font-size:.9rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+    .logo span { color:var(--gold); }
+    .nav-link { color:var(--muted); font-size:.9rem; }
+    .hero { position:relative; min-height:760px; display:flex; align-items:center; overflow:hidden; padding:150px 0 110px; background:radial-gradient(circle at 76% 40%,rgba(201,162,39,.13),transparent 30%),linear-gradient(115deg,#0a0a0a 50%,#12100a); }
+    .hero:after { content:''; position:absolute; width:520px; height:520px; right:-250px; top:-230px; border:1px solid rgba(201,162,39,.15); border-radius:50%; box-shadow:0 0 0 55px rgba(201,162,39,.025),0 0 0 110px rgba(201,162,39,.025); }
+    .hero-grid { position:relative; z-index:1; display:grid; gap:55px; align-items:center; grid-template-columns:1.2fr .8fr; }
+    .hero h1 { margin:14px 0 20px; }
+    .hero-copy { max-width:640px; font-size:1.15rem; }
+    .hero-actions { display:flex; flex-wrap:wrap; gap:12px; margin:32px 0 25px; }
+    .price { display:flex; align-items:baseline; gap:12px; font-size:2rem; font-weight:700; color:#fff; }
+    .price small { color:var(--muted); font-size:.9rem; font-weight:400; }
+    .book-wrap { display:flex; justify-content:center; }
+    .book { width:min(310px,75vw); aspect-ratio:3/4; object-fit:cover; border:1px solid var(--gold); border-radius:5px 14px 14px 5px; box-shadow:25px 28px 60px rgba(0,0,0,.65),8px 0 0 #7d6216; }
+    .trust-row { display:flex; flex-wrap:wrap; gap:14px; margin-top:20px; }
+    .trust-row span { color:var(--muted); font-size:.76rem; }
+    .trust-row span::before { content:'✓'; color:var(--gold-light); font-weight:700; margin-right:6px; }
+
+    /* =====================
+       CONTENT SECTIONS
+       ===================== */
+    .problem { background:#0d0d0d; }
+    .pain-grid,.feature-grid,.audience-grid,.trust-grid { display:grid; gap:14px; grid-template-columns:repeat(4,1fr); }
+    .card { background:var(--panel); border:1px solid rgba(255,255,255,.08); border-radius:var(--radius); padding:28px; }
+    .pain-card { min-height:190px; }
+    .number { color:var(--gold); font-size:1.8rem; font-family:'Playfair Display',serif; }
+    .pain-card h3 { margin:18px 0 9px; }
+    .story { background:linear-gradient(100deg,#151208,#0d0d0d); }
+    .story-inner { display:grid; grid-template-columns:.8fr 1.2fr; gap:70px; align-items:center; }
+    .quote { border-left:2px solid var(--gold); padding-left:28px; font-size:clamp(1.4rem,2.6vw,2rem); line-height:1.45; color:#fff; }
+    .quote em { color:var(--gold-light); font-style:normal; }
+    .examples { background:#0d0d0d; }
+    .example-grid { display:grid; gap:16px; grid-template-columns:repeat(3,1fr); }
+    .example-card { position:relative; overflow:hidden; }
+    .example-card:before { content:''; position:absolute; inset:0 auto 0 0; width:3px; background:var(--gold); }
+    .example-card h3 { margin:14px 0 8px; }
+    .example-card strong { color:#fff; }
+    .label { display:inline-block; border:1px solid var(--line); border-radius:999px; color:var(--gold-light); font-size:.68rem; font-weight:700; letter-spacing:.08em; padding:5px 9px; text-transform:uppercase; }
+    .note { margin-top:20px; font-size:.82rem; font-style:italic; }
+    .features { background:#0a0a0a; }
+    .feature-grid { grid-template-columns:repeat(3,1fr); }
+    .feature-card { display:flex; gap:14px; padding:21px; }
+    .check { flex:0 0 24px; height:24px; display:grid; place-items:center; border-radius:50%; background:rgba(201,162,39,.15); color:var(--gold-light); }
+    .feature-card p { font-size:.91rem; }
+    .audience-grid { grid-template-columns:repeat(5,1fr); }
+    .audience-card { text-align:center; padding:23px 14px; }
+    .audience-icon { display:block; color:var(--gold-light); font-size:1.6rem; margin-bottom:12px; }
+    .about { background:#0d0d0d; }
+    .about-inner { display:grid; grid-template-columns:230px 1fr; gap:55px; align-items:center; max-width:850px; }
+    .avatar { width:190px; height:190px; border-radius:50%; border:1px solid var(--gold); background:var(--panel-2); display:grid; place-items:center; color:var(--gold-light); font-family:'Playfair Display',serif; font-size:4rem; }
+    .about h2 { margin:10px 0 16px; }
+    .trust-grid { grid-template-columns:repeat(3,1fr); }
+    .trust-card { text-align:center; }
+    .trust-card .trust-icon { color:var(--gold-light); font-size:1.6rem; }
+    .trust-card h3 { margin:13px 0 5px; }
+
+    /* =====================
+       FAQ, CTA & FOOTER
+       ===================== */
+    .faq-wrap { max-width:800px; margin:auto; }
+    details { border-bottom:1px solid rgba(255,255,255,.14); }
+    summary { cursor:pointer; list-style:none; display:flex; justify-content:space-between; gap:18px; padding:23px 0; color:#fff; font-weight:600; }
+    summary::-webkit-details-marker { display:none; }
+    summary:after { content:'+'; color:var(--gold-light); font-size:1.4rem; }
+    details[open] summary:after { content:'−'; }
+    details p { padding:0 45px 22px 0; }
+    .final { text-align:center; background:linear-gradient(135deg,#1a1508,#0b0b0b); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+    .final h2 { max-width:700px; margin:12px auto 14px; }
+    .final p { margin-bottom:25px; }
+    .final .price { justify-content:center; margin-bottom:22px; }
+    .final-actions { display:flex; justify-content:center; flex-wrap:wrap; gap:12px; }
+    footer { padding:36px 0 85px; text-align:center; }
+    footer p { font-size:.78rem; }
+    .sticky-cta { display:none; }
+
+    @media (max-width:850px) {
+      section { padding:75px 0; }
+      .hero { min-height:auto; padding-top:125px; }
+      .hero-grid,.story-inner { grid-template-columns:1fr; gap:42px; }
+      .hero-grid { text-align:center; }
+      .hero-copy { margin-inline:auto; }
+      .hero-actions,.trust-row { justify-content:center; }
+      .pain-grid,.feature-grid { grid-template-columns:repeat(2,1fr); }
+      .audience-grid { grid-template-columns:repeat(3,1fr); }
+    }
+    @media (max-width:560px) {
+      .container { width:min(100% - 32px,1120px); }
+      .nav-link { display:none; }
+      .hero { padding-bottom:80px; }
+      .hero h1 { font-size:2.75rem; }
+      .hero-actions,.final-actions { flex-direction:column; }
+      .btn { width:100%; }
+      .book { width:230px; }
+      .pain-grid,.feature-grid,.example-grid,.trust-grid,.audience-grid { grid-template-columns:1fr; }
+      .pain-card { min-height:auto; }
+      .story-inner { gap:25px; }
+      .about-inner { grid-template-columns:1fr; text-align:center; gap:25px; }
+      .avatar { margin:auto; }
+      .quote { padding-left:20px; }
+      .sticky-cta { display:flex; position:fixed; z-index:20; bottom:14px; left:16px; right:16px; box-shadow:0 8px 30px rgba(0,0,0,.6); }
+      footer { padding-bottom:95px; }
+    }
+  </style>
 </head>
 <body>
-  <div id="root"></div>
-  <script type="text/babel">
-    const {useState}=React;
-    const money=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(n||0);
-    const fmt=d=>new Date(d+'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-    const dateOnly=d=>new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10);
-    const addMonths=(date,months)=>{const d=new Date(date+'T00:00:00');d.setMonth(d.getMonth()+Number(months));return dateOnly(d)};
-    const addPeriod=(date,frequency)=>{const d=new Date(date+'T00:00:00');if(frequency==='weekly')d.setDate(d.getDate()+7);else d.setMonth(d.getMonth()+1);return dateOnly(d)};
-    const daysLeft=d=>Math.max(0,Math.ceil((new Date(d)-new Date())/86400000));
-    const seed=[{id:1,name:'New laptop fund',amount:150,frequency:'weekly',start:'2026-08-07',maturity:'2026-11-07',duration:3,status:'active',contributions:[{date:'2026-08-07',amount:150},{date:'2026-08-14',amount:150},{date:'2026-08-21',amount:150}]},{id:2,name:'December getaway',amount:300,frequency:'monthly',start:'2026-07-01',maturity:'2026-12-01',duration:6,status:'active',contributions:[{date:'2026-07-01',amount:300},{date:'2026-08-01',amount:300}]}];
-    function App(){
-      const [user,setUser]=useState(()=>JSON.parse(localStorage.getItem('inout_saver')||'null'));
-      const [plans,setPlans]=useState(()=>JSON.parse(localStorage.getItem('inout_plans')||JSON.stringify(seed)));
-      const [screen,setScreen]=useState(user?'dashboard':'landing'); const [selected,setSelected]=useState(null); const [notice,setNotice]=useState(false);
-      const persist=p=>{setPlans(p);localStorage.setItem('inout_plans',JSON.stringify(p))};
-      const login=name=>{const u={name,email:name.toLowerCase().replace(/ /g,'.')+'@example.com'};setUser(u);localStorage.setItem('inout_saver',JSON.stringify(u));setScreen('dashboard')};
-      const logout=()=>{setUser(null);localStorage.removeItem('inout_saver');setScreen('landing')};
-      const createPlan=data=>{const p={...data,id:Date.now(),status:'active',contributions:[]};persist([p,...plans]);setScreen('dashboard')};
-      const markPaid=id=>{persist(plans.map(p=>p.id===id?{...p,contributions:[...p.contributions,{date:dateOnly(new Date()),amount:p.amount}]}:p));setNotice(true);setTimeout(()=>setNotice(false),2800)};
-      const current=plans.find(p=>p.id===selected);
-      return <div className="min-h-screen">
-        <header className="sticky top-0 z-20 border-b border-[#e7eee8] bg-[#fbfaf5]/90 backdrop-blur"><div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4"><button onClick={()=>setScreen(user?'dashboard':'landing')} className="flex items-center gap-2 text-xl font-extrabold tracking-tight"><span className="grid h-9 w-9 place-items-center rounded-xl bg-ink text-sm text-white">↗</span> INOUT</button>{user&&<div className="flex items-center gap-3"><button onClick={()=>setScreen('notifications')} className="relative rounded-full p-2 hover:bg-mint">♢<span className="absolute right-1 top-1 h-2 w-2 rounded-full bg-[#ef8b66]"></span></button><span className="hidden text-sm text-slate-500 sm:block">Hi, {user.name.split(' ')[0]}</span><button onClick={logout} className="rounded-full border border-[#d6e4da] px-3 py-1.5 text-sm font-semibold">Log out</button></div>}</div></header>
-        {notice&&<div className="fixed right-5 top-20 z-30 rounded-2xl bg-ink px-5 py-3 text-sm font-semibold text-white shadow-soft">Payment logged. Nice work! ✨</div>}
-        {screen==='landing'&&<Landing onStart={()=>setScreen('auth')}/>} {screen==='auth'&&<Auth onLogin={login}/>} {screen==='dashboard'&&<Dashboard plans={plans} onCreate={()=>setScreen('create')} onOpen={id=>{setSelected(id);setScreen('detail')}} onNotify={()=>setScreen('notifications')}/>} {screen==='create'&&<Create onBack={()=>setScreen('dashboard')} onCreate={createPlan}/>} {screen==='detail'&&current&&<Detail plan={current} onBack={()=>setScreen('dashboard')} onPaid={()=>markPaid(current.id)} onPause={()=>{persist(plans.map(p=>p.id===current.id?{...p,status:p.status==='paused'?'active':'paused'}:p))}}/>} {screen==='notifications'&&<Notifications onBack={()=>setScreen('dashboard')}/>} 
-        <footer className="mx-auto max-w-6xl px-5 py-10 text-center text-xs text-slate-400">INOUT is a tracking and reminder tool. We never hold, move, or access your money.</footer>
+  <!-- ===================== EDITABLE: HEADER ===================== -->
+  <header>
+    <div class="container nav">
+      <a class="logo" href="#top">Money <span>Master</span></a>
+      <a class="nav-link" href="#inside">See what's inside ↓</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- ===================== EDITABLE: HERO ===================== -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <p class="eyebrow">A practical guide for everyday Nigerians</p>
+          <h1>The Money Master <span class="gold">System</span></h1>
+          <p class="hero-copy">A Complete Blueprint for Taking Control of Your Finances — without jargon, shame, or guesswork.</p>
+          <div class="hero-actions">
+            <a class="btn btn-gold" href="https://selar.com/5r5u5y1582" target="_blank" rel="noopener">Get Instant Access <span>→</span></a>
+            <a class="btn btn-outline" href="https://wa.me/2349119482199" target="_blank" rel="noopener">Chat on WhatsApp</a>
+          </div>
+          <div class="price">₦30,000 <small>one-time payment · PDF ebook</small></div>
+          <div class="trust-row" aria-label="Purchase benefits"><span>Secure payment via Selar</span><span>Instant email delivery</span><span>Digital access</span></div>
+        </div>
+        <div class="book-wrap">
+          <!-- Replace this placeholder src with the final book cover image. -->
+          <img class="book" src="https://placehold.co/620x830/111111/C9A227?text=THE%20MONEY%20MASTER%20SYSTEM" alt="Placeholder cover for The Money Master System ebook">
+        </div>
       </div>
-    }
-    function Landing({onStart}){return <main><section className="mx-auto grid max-w-6xl gap-12 px-5 pb-20 pt-20 md:grid-cols-[1.05fr_.95fr] md:items-center md:pt-28"><div><div className="mb-6 inline-flex items-center gap-2 rounded-full bg-mint px-3 py-1.5 text-sm font-semibold text-brand"><span>✦</span> Your money. Your plan. Your pace.</div><h1 className="max-w-xl text-5xl font-extrabold leading-[1.04] tracking-tight md:text-7xl">Small steps.<br/><span className="text-brand">Big wins.</span></h1><p className="mt-6 max-w-lg text-lg leading-8 text-slate-500">INOUT helps you build a savings habit with simple plans, gentle reminders, and a clear view of your progress.</p><button onClick={onStart} className="mt-8 rounded-2xl bg-ink px-6 py-4 font-bold text-white shadow-soft hover:-translate-y-0.5">Start a savings plan <span className="ml-5">→</span></button><p className="mt-5 text-sm text-slate-400">No bank connection. No transfers. Just intentional progress.</p></div><div className="relative rounded-[2.5rem] bg-[#dff5ea] p-6 shadow-soft md:p-10"><div className="absolute -right-3 -top-4 rounded-2xl bg-white px-4 py-3 text-sm font-bold shadow-soft">✦ On track</div><div className="rounded-3xl bg-white p-6"><div className="flex justify-between"><div><p className="text-sm text-slate-400">Your progress</p><h3 className="mt-1 text-2xl font-extrabold">Weekend getaway</h3></div><span className="rounded-full bg-mint px-3 py-1 text-sm font-bold text-brand">68%</span></div><div className="mt-8 h-4 rounded-full bg-[#edf2ed]"><div className="h-4 w-[68%] rounded-full bg-brand"></div></div><div className="mt-5 flex justify-between text-sm"><span className="font-bold">$1,020 saved</span><span className="text-slate-400">$1,500 goal</span></div><div className="mt-8 grid grid-cols-2 gap-3"><div className="rounded-2xl bg-sky p-4"><p className="text-xs text-slate-500">Next payment</p><p className="mt-1 font-bold">In 3 days</p></div><div className="rounded-2xl bg-[#fff0e7] p-4"><p className="text-xs text-slate-500">Days remaining</p><p className="mt-1 font-bold">42 days</p></div></div></div></div></section><section className="mx-auto max-w-6xl px-5 pb-10"><div className="grid gap-4 md:grid-cols-3">{[['◎','Make a plan','Choose an amount and a timeline that feels right.'],['⌁','Build the habit','Get a gentle nudge before each contribution.'],['✓','Celebrate progress','See every step add up to something meaningful.']].map(x=><div className="rounded-3xl border border-[#e6eee7] bg-white p-6" key={x[1]}><span className="text-2xl text-brand">{x[0]}</span><h3 className="mt-5 font-bold">{x[1]}</h3><p className="mt-2 text-sm leading-6 text-slate-500">{x[2]}</p></div>)}</div></section></main>}
-    function Auth({onLogin}){const [name,setName]=useState('');return <main className="mx-auto max-w-md px-5 py-20"><div className="mb-8"><p className="font-bold text-brand">WELCOME TO INOUT</p><h1 className="mt-3 text-4xl font-extrabold">Let’s make it happen.</h1><p className="mt-3 text-slate-500">Create your account to start tracking your savings.</p></div><form onSubmit={e=>{e.preventDefault();onLogin(name||'Alex Morgan')}} className="rounded-3xl bg-white p-6 shadow-soft"><label className="text-sm font-bold">Your name<input required value={name} onChange={e=>setName(e.target.value)} placeholder="Alex Morgan" className="mt-2 w-full rounded-xl border border-[#dce8df] p-3 outline-none focus:border-brand"/></label><label className="mt-5 block text-sm font-bold">Email<input type="email" required placeholder="you@example.com" className="mt-2 w-full rounded-xl border border-[#dce8df] p-3 outline-none focus:border-brand"/></label><label className="mt-5 block text-sm font-bold">Password<input type="password" required minLength="6" placeholder="••••••••" className="mt-2 w-full rounded-xl border border-[#dce8df] p-3 outline-none focus:border-brand"/></label><button className="mt-6 w-full rounded-xl bg-ink py-3.5 font-bold text-white">Create account</button><p className="mt-5 text-center text-xs text-slate-400">By continuing, you agree to use INOUT as a tracking tool only.</p></form></main>}
-    function Dashboard({plans,onCreate,onOpen}){return <main className="mx-auto max-w-6xl px-5 py-10"><div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end"><div><p className="text-sm font-bold uppercase tracking-widest text-brand">Your space</p><h1 className="mt-2 text-4xl font-extrabold">Savings dashboard</h1><p className="mt-2 text-slate-500">A little consistency goes a long way.</p></div><button onClick={onCreate} className="rounded-xl bg-ink px-5 py-3 font-bold text-white">+ New plan</button></div><div className="mt-9 grid gap-5 md:grid-cols-3"><div className="rounded-3xl bg-ink p-6 text-white"><p className="text-sm text-[#b9d5c9]">Total saved</p><p className="mt-3 text-4xl font-extrabold">{money(plans.reduce((a,p)=>a+p.contributions.reduce((x,c)=>x+c.amount,0),0))}</p><p className="mt-3 text-sm text-[#b9d5c9]">Across {plans.length} active plans</p></div><div className="rounded-3xl bg-mint p-6"><p className="text-sm text-brand">Active plans</p><p className="mt-3 text-4xl font-extrabold">{plans.filter(p=>p.status==='active').length}</p><p className="mt-3 text-sm text-slate-500">Keep showing up</p></div><div className="rounded-3xl bg-sky p-6"><p className="text-sm text-slate-500">Next reminder</p><p className="mt-3 text-2xl font-extrabold">In 2 days</p><p className="mt-3 text-sm text-slate-500">We’ll nudge you gently</p></div></div><div className="mt-10 flex items-center justify-between"><h2 className="text-xl font-extrabold">Your plans</h2><span className="text-sm text-slate-400">{plans.length} total</span></div><div className="mt-4 grid gap-5 lg:grid-cols-2">{plans.map(p=><PlanCard key={p.id} p={p} onOpen={onOpen}/>)}</div></main>}
-    function PlanCard({p,onOpen}){const saved=p.contributions.reduce((a,c)=>a+c.amount,0), target=Math.max(p.amount*(p.frequency==='weekly'?Math.round((new Date(p.maturity)-new Date(p.start))/604800000):Math.round((new Date(p.maturity)-new Date(p.start))/2592000000)),p.amount), pct=Math.min(100,Math.round(saved/target*100));return <button onClick={()=>onOpen(p.id)} className="w-full rounded-3xl border border-[#e4eee7] bg-white p-6 text-left shadow-soft transition hover:-translate-y-1"><div className="flex items-start justify-between"><div><p className="text-sm text-slate-400">{p.frequency==='weekly'?'Weekly':'Monthly'} contributions</p><h3 className="mt-1 text-xl font-extrabold">{p.name}</h3></div><span className={'rounded-full px-3 py-1 text-xs font-bold '+(p.status==='paused'?'bg-[#fff0e7] text-[#bd6a45]':'bg-mint text-brand')}>{p.status}</span></div><div className="mt-7 flex items-end justify-between"><p className="text-3xl font-extrabold">{money(saved)}<span className="text-base font-medium text-slate-400"> saved</span></p><span className="font-bold text-brand">{pct}%</span></div><div className="mt-3 h-3 rounded-full bg-[#edf2ed]"><div className="progress h-3 rounded-full bg-brand" style={{width:pct+'%'}}></div></div><div className="mt-5 flex justify-between text-sm text-slate-500"><span>Next: {fmt(addPeriod(p.contributions.at(-1)?.date||p.start,p.frequency))}</span><span>{daysLeft(p.maturity)} days left</span></div></button>}
-    function Create({onBack,onCreate}){const [name,setName]=useState('');const [amount,setAmount]=useState('');const [frequency,setFrequency]=useState('weekly');const [duration,setDuration]=useState('3');const [start,setStart]=useState(dateOnly(new Date()));return <main className="mx-auto max-w-2xl px-5 py-10"><button onClick={onBack} className="text-sm font-bold text-slate-500">← Back to dashboard</button><h1 className="mt-7 text-4xl font-extrabold">Create a savings plan</h1><p className="mt-2 text-slate-500">Give your goal a name. We’ll handle the dates and math.</p><form onSubmit={e=>{e.preventDefault();onCreate({name,amount:Number(amount),frequency,start,maturity:addMonths(start,duration),duration})}} className="mt-8 rounded-3xl bg-white p-6 shadow-soft sm:p-8"><label className="text-sm font-bold">Plan name<input required value={name} onChange={e=>setName(e.target.value)} placeholder="e.g. Emergency fund" className="field"/></label><div className="mt-5 grid gap-5 sm:grid-cols-2"><label className="text-sm font-bold">Contribution amount<input required min="1" type="number" value={amount} onChange={e=>setAmount(e.target.value)} placeholder="$ 0" className="field"/></label><label className="text-sm font-bold">Frequency<select value={frequency} onChange={e=>setFrequency(e.target.value)} className="field"><option value="weekly">Weekly</option><option value="monthly">Monthly</option></select></label></div><label className="mt-5 block text-sm font-bold">Start date<input required type="date" value={start} onChange={e=>setStart(e.target.value)} className="field"/></label><div className="mt-5"><p className="text-sm font-bold">Lock duration</p><div className="mt-2 grid grid-cols-3 gap-2">{['3','6','12'].map(x=><button type="button" key={x} onClick={()=>setDuration(x)} className={'rounded-xl border py-3 text-sm font-bold '+(duration===x?'border-brand bg-mint text-brand':'border-[#dce8df]')}>{x} months</button>)}</div></div>{amount&&<div className="mt-6 rounded-2xl bg-sky p-4 text-sm"><div className="flex justify-between"><span className="text-slate-500">Maturity date</span><b>{fmt(addMonths(start,duration))}</b></div><div className="mt-2 flex justify-between"><span className="text-slate-500">Estimated target</span><b>{money(Number(amount)*(frequency==='weekly'?Math.round((new Date(addMonths(start,duration))-new Date(start))/604800000):Number(duration)))}</b></div></div>}<button className="mt-7 w-full rounded-xl bg-ink py-4 font-bold text-white">Create plan</button></form></main>}
-    function Detail({plan,onBack,onPaid,onPause}){const saved=plan.contributions.reduce((a,c)=>a+c.amount,0);return <main className="mx-auto max-w-3xl px-5 py-10"><button onClick={onBack} className="text-sm font-bold text-slate-500">← Back to dashboard</button><div className="mt-7 flex flex-col justify-between gap-5 sm:flex-row sm:items-end"><div><span className="rounded-full bg-mint px-3 py-1 text-xs font-bold text-brand">{plan.status}</span><h1 className="mt-4 text-4xl font-extrabold">{plan.name}</h1><p className="mt-2 text-slate-500">{money(plan.amount)} · {plan.frequency}</p></div><button disabled={plan.status==='paused'||new Date()>=new Date(plan.maturity)} onClick={onPaid} className="rounded-xl bg-brand px-5 py-3 font-bold text-white disabled:cursor-not-allowed disabled:bg-slate-300">{new Date()>=new Date(plan.maturity)?'Plan matured':'Mark payment made'}</button></div><div className="mt-8 rounded-3xl bg-ink p-6 text-white"><p className="text-sm text-[#b9d5c9]">Total saved so far</p><p className="mt-2 text-5xl font-extrabold">{money(saved)}</p><p className="mt-4 text-sm text-[#b9d5c9]">Matures {fmt(plan.maturity)} · {daysLeft(plan.maturity)} days remaining</p></div><div className="mt-8 flex items-center justify-between"><h2 className="text-xl font-extrabold">Contribution history</h2><button onClick={onPause} className="text-sm font-bold text-slate-500">{plan.status==='paused'?'Resume':'Pause'} plan</button></div><div className="mt-4 divide-y divide-[#e7eee8] rounded-3xl bg-white px-6 shadow-soft">{plan.contributions.length?plan.contributions.slice().reverse().map((c,i)=><div className="flex items-center justify-between py-5" key={i}><div className="flex items-center gap-3"><span className="grid h-9 w-9 place-items-center rounded-full bg-mint text-brand">✓</span><div><p className="font-bold">Payment confirmed</p><p className="text-sm text-slate-400">{fmt(c.date)}</p></div></div><b>{money(c.amount)}</b></div>):<p className="py-8 text-center text-slate-400">Your first contribution will appear here.</p>}</div><p className="mt-6 text-center text-xs text-slate-400">Remember: transfer money to your own savings account separately, then confirm it here.</p></main>}
-    function Notifications({onBack}){return <main className="mx-auto max-w-2xl px-5 py-10"><button onClick={onBack} className="text-sm font-bold text-slate-500">← Back to dashboard</button><h1 className="mt-7 text-4xl font-extrabold">Notifications</h1><p className="mt-2 text-slate-500">Friendly reminders to keep your momentum.</p><div className="mt-8 space-y-3"><div className="rounded-3xl bg-white p-5 shadow-soft"><div className="flex gap-4"><span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#fff0e7]">◷</span><div><p className="font-bold">Your next payment is in 2 days</p><p className="mt-1 text-sm text-slate-500">Set aside your contribution for New laptop fund. You’ve got this.</p><p className="mt-3 text-xs text-slate-400">Today · Email reminder scheduled</p></div></div></div><div className="rounded-3xl bg-white p-5 shadow-soft"><div className="flex gap-4"><span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-mint">✦</span><div><p className="font-bold">You’re building a great habit</p><p className="mt-1 text-sm text-slate-500">Three contributions logged this month. Keep going!</p><p className="mt-3 text-xs text-slate-400">Yesterday</p></div></div></div></div></main>}
-    ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
-  </script>
-  <style>.field{display:block;width:100%;margin-top:.5rem;border:1px solid #dce8df;border-radius:.75rem;padding:.75rem;outline:none;background:white}.field:focus{border-color:#147d68}</style>
+    </section>
+
+    <!-- ===================== EDITABLE: THE PROBLEM ===================== -->
+    <section class="problem">
+      <div class="container">
+        <div class="section-head"><p class="eyebrow">The problem</p><h2>Your money should work harder than you do.</h2><p>Being hardworking is not always enough when nobody teaches you what to do with the money that comes in.</p></div>
+        <div class="pain-grid">
+          <article class="card pain-card"><span class="number">01</span><h3>Salary disappears by week three</h3><p>You earn, pay bills, help family — then wonder where the rest went.</p></article>
+          <article class="card pain-card"><span class="number">02</span><h3>No emergency cushion</h3><p>One unexpected expense can throw the entire month into panic.</p></article>
+          <article class="card pain-card"><span class="number">03</span><h3>Debt keeps multiplying</h3><p>Loan-app repayments make it feel impossible to get your head above water.</p></article>
+          <article class="card pain-card"><span class="number">04</span><h3>Saving feels confusing</h3><p>You want to save or invest, but you do not know where to begin.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== EDITABLE: AUTHOR STORY ===================== -->
+    <section class="story">
+      <div class="container story-inner">
+        <div><p class="eyebrow">Why I wrote this book</p><h2>A system beats willpower.</h2></div>
+        <p class="quote">“I built <em>The Money Master System</em> because I got tired of watching hardworking Nigerians struggle with money for no reason other than never having a real system. It's not about how much you earn — it's about having a plan for it. This book is that plan.”<br><br><small>— Coach Clinton</small></p>
+      </div>
+    </section>
+
+    <!-- ===================== EDITABLE: ILLUSTRATIVE EXAMPLES ===================== -->
+    <section class="examples">
+      <div class="container">
+        <div class="section-head"><p class="eyebrow">The impossible made possible</p><h2>Small, consistent moves. A different financial life.</h2><p>These are illustrative worked examples from inside the book — the kind of results this system is designed to produce, not verified customer reviews.</p></div>
+        <div class="example-grid">
+          <article class="card example-card"><span class="label">Worked example</span><h3>Ibrahim</h3><p>Cleared <strong>₦280,000 across four loan apps in 8 months</strong> using the debt avalanche method taught in Chapter 10.</p></article>
+          <article class="card example-card"><span class="label">Worked example</span><h3>Blessing</h3><p>Started with ₦180,000 debt and no emergency fund. Within 90 days, cleared ₦95,000, built a ₦60,000 emergency fund, and grew income by ₦25,000/month.</p></article>
+          <article class="card example-card"><span class="label">Worked example</span><h3>Tunde</h3><p>A keke rider who saved <strong>₦182,500 in one year</strong> by setting aside just ₦500 each day.</p></article>
+        </div>
+        <!-- Placeholder testimonial carousel structure: replace example cards with real reviews when available. -->
+        <p class="note">Real buyer testimonials will be added here as reviews come in.</p>
+      </div>
+    </section>
+
+    <!-- ===================== EDITABLE: WHAT YOU GET ===================== -->
+    <section class="features" id="inside">
+      <div class="container">
+        <div class="section-head"><p class="eyebrow">What you get</p><h2>Everything you need to build your money system.</h2><p>Open the PDF, start where you are, and follow a clear path from confusion to control.</p></div>
+        <div class="feature-grid">
+          <div class="card feature-card"><span class="check">✓</span><p><strong>22 chapters</strong> covering the fundamentals of personal finance.</p></div>
+          <div class="card feature-card"><span class="check">✓</span><p>Income, expense, budget, savings, debt and net-worth trackers.</p></div>
+          <div class="card feature-card"><span class="check">✓</span><p>The <strong>30-Day Money Challenge</strong> to start taking action.</p></div>
+          <div class="card feature-card"><span class="check">✓</span><p>The <strong>90-Day Transformation Plan</strong> for lasting momentum.</p></div>
+          <div class="card feature-card"><span class="check">✓</span><p>Weekly Audit + Monthly Review system.</p></div>
+          <div class="card feature-card"><span class="check">✓</span><p>Bonus: <strong>50 Ways to Save More Money</strong>.</p></div>
+          <div class="card feature-card"><span class="check">✓</span><p>Bonus: <strong>100 Money Habits of Financially Successful People</strong>.</p></div>
+          <div class="card feature-card"><span class="check">✓</span><p>Quick-Start Guides for students, salary earners, freelancers and entrepreneurs.</p></div>
+          <div class="card feature-card"><span class="check">✓</span><p><strong>10 printable worksheets</strong> to make the system practical.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== EDITABLE: WHO IT IS FOR ===================== -->
+    <section>
+      <div class="container"><div class="section-head"><p class="eyebrow">Who this is for</p><h2>If you earn or spend money, this is for you.</h2></div>
+        <div class="audience-grid">
+          <div class="card audience-card"><span class="audience-icon">₦</span><p>Salary earners</p></div><div class="card audience-card"><span class="audience-icon">↗</span><p>Freelancers & entrepreneurs</p></div><div class="card audience-card"><span class="audience-icon">✦</span><p>Students</p></div><div class="card audience-card"><span class="audience-icon">▣</span><p>Market women & artisans</p></div><div class="card audience-card"><span class="audience-icon">?</span><p>Anyone asking “where did my money go?”</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== EDITABLE: ABOUT AUTHOR ===================== -->
+    <section class="about"><div class="container about-inner">
+      <!-- Replace the initials with an <img> when a photo is available. -->
+      <div class="avatar" role="img" aria-label="Placeholder portrait for Coach Clinton">CC</div>
+      <div><p class="eyebrow">About the author</p><h2>Meet Coach Clinton.</h2><p>Coach Clinton is the creator of The Money Master System, built to give everyday Nigerians a practical, judgment-free path to understanding and controlling their money — no jargon, no guesswork, just a system that works.</p></div>
+    </div></section>
+
+    <!-- ===================== EDITABLE: TRUST & GUARANTEE ===================== -->
+    <section><div class="container"><div class="section-head"><p class="eyebrow">Buy with confidence</p><h2>Simple, secure, immediate.</h2></div><div class="trust-grid">
+      <div class="card trust-card"><div class="trust-icon">▣</div><h3>Secure payment via Selar</h3><p>Use Selar's trusted checkout to complete your purchase.</p></div><div class="card trust-card"><div class="trust-icon">✉</div><h3>Instant email delivery</h3><p>Your PDF is delivered to your email after payment.</p></div><div class="card trust-card"><div class="trust-icon">✓</div><h3>Instant access</h3><p>As a digital product, all sales are final.</p></div>
+    </div></div></section>
+
+    <!-- ===================== EDITABLE: FAQ ===================== -->
+    <section class="problem"><div class="container faq-wrap"><div class="section-head"><p class="eyebrow">Frequently asked questions</p><h2>Before you begin.</h2></div>
+      <details><summary>I don't earn much — is this for me?</summary><p>Yes. The system is designed for real-life Nigerian incomes, not just high earners. It helps you create clarity and a plan with what you have today.</p></details>
+      <details><summary>I've failed at budgeting before, why would this work?</summary><p>This is more than a spreadsheet. You will learn a simple weekly and monthly review rhythm that helps you adjust without shame when life changes.</p></details>
+      <details><summary>Is this practical or just theory?</summary><p>It is practical by design: trackers, printable worksheets, a 30-Day Money Challenge and a 90-Day Transformation Plan help you put every lesson into action.</p></details>
+      <details><summary>How do I receive the ebook after paying?</summary><p>Complete payment through Selar and the PDF will be sent to the email address you use at checkout. If you need help, chat with us on WhatsApp.</p></details>
+    </div></section>
+
+    <!-- ===================== EDITABLE: FINAL CTA ===================== -->
+    <section class="final"><div class="container"><p class="eyebrow">Your next chapter starts here</p><h2>You do not need more motivation. You need a money system.</h2><p>Get the blueprint and start building calm, confident control over your finances.</p><div class="price">₦30,000</div><div class="final-actions"><a class="btn btn-gold" href="https://selar.com/5r5u5y1582" target="_blank" rel="noopener">Get Instant Access →</a><a class="btn btn-outline" href="https://wa.me/2349119482199" target="_blank" rel="noopener">Chat on WhatsApp</a></div></div></section>
+  </main>
+
+  <!-- ===================== EDITABLE: FOOTER ===================== -->
+  <footer><div class="container"><p><strong>The Money Master System</strong> — by Coach Clinton, Wealth Work Academy</p><p>© 2026 Wealth Work Academy. Financial education for everyday Nigerians.</p></div></footer>
+  <a class="btn btn-gold sticky-cta" href="https://selar.com/5r5u5y1582" target="_blank" rel="noopener">Get Instant Access · ₦30,000</a>
 </body>
 </html>
